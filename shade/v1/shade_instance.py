@@ -14,10 +14,6 @@ class __Shade:
         self.ip = ip
         self.port = port
 
-    def get_assets(self):
-        # TODO serialize pydantic & translate file paths
-        return requests.get(self.ip + ':' + str(self.port) + '/assets').json()
-
 
 class ShadeLocal(__Shade):
     """
