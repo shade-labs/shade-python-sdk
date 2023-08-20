@@ -25,3 +25,13 @@ if __name__ == '__main__':
     )
 
     print(server.roots.get_roots())
+    roots = []
+    for i in range(10):
+        print(server.roots.add_new_root(Path('/home/shade/Downloads')))
+
+    print(server.roots.get_roots())
+
+    for root in server.roots.get_roots():
+        server.roots.delete_root(root.id)
+
+    print(server.roots.get_roots())

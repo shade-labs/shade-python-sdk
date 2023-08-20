@@ -1,3 +1,4 @@
+# TODO get all assets in a root
 import uuid
 from datetime import datetime
 from pathlib import Path
