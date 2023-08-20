@@ -1,5 +1,6 @@
 import requests
 from shade.v1.routes.roots import Roots
+from shade.v1.routes.previews import Previews
 from shade.v1.api import API
 from pathlib import Path
 from shade.v1.types import MountInfo
@@ -20,6 +21,7 @@ class __Shade:
 
         self.__api = API(f'{self.ip}:{self.port}')
         self.roots = Roots(self.__api, self.mount_info)
+        self.previews = Previews(self.__api, self.mount_info)
 
 
 class ShadeLocal(__Shade):

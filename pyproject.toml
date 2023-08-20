@@ -10,9 +10,10 @@ packages = [
 
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 requests = "*"
 pydantic = "*"
+pillow = "^10.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

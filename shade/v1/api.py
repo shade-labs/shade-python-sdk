@@ -18,6 +18,7 @@ def handle_server_errors(func: callable) -> callable:
     """
     def wrapper(*args, **kwargs):
         resp = func(*args, **kwargs)
+        # resp.raise_for_status()
         if resp.status_code >= 400:
             raise APIException(status_code=resp.status_code, error=resp.json())
         return resp
