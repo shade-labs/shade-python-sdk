@@ -24,4 +24,4 @@ if __name__ == '__main__':
         SERVER_IP
     )
 
-    print(shade.get_assets())
+    print(shade.roots.get_roots()[0])

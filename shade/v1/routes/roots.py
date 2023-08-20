@@ -4,13 +4,12 @@ from pathlib import Path
 from typing import Optional
 
 from shade.v1.api import API
-from shade.v1.types import PathConverter
+from shade.v1.types import ServerResponse, MountInfo
 from typing import List
 
 
-class RootModel(PathConverter):
+class RootModel(ServerResponse):
     id: uuid.UUID
-    path: Path
     created: datetime
     updated: datetime
     files_found: int = 0
@@ -23,12 +22,13 @@ class RootModel(PathConverter):
 
 
 class Roots:
-    def __init__(self, api: API):
+    def __init__(self, api: API, mount_info: MountInfo):
         self.__api = api
+        self.__mount_info = mount_info
 
     def get_roots(self) -> List[RootModel]:
         """
         Get all roots from the API. Roots are the top level directories that
         shade is indexing / searching from
         """
-        json_response = self.__api.
+        return [RootModel(**root, mount_info=self.__mount_info) for root in self.__api.get('indexing/roots').json()]

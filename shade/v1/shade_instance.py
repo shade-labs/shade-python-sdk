@@ -1,18 +1,25 @@
 import requests
+from shade.v1.routes.roots import Roots
+from shade.v1.api import API
 from pathlib import Path
+from shade.v1.types import MountInfo
 
 
 class __Shade:
-    local_mount_location: Path
-    server_mount_location: Path
+    mount_info: MountInfo
     ip: str
     port: int
 
     def __init__(self, local_mount_location: Path, server_mount_location: Path, ip: str, port: int):
-        self.local_mount_location = local_mount_location
-        self.server_mount_location = server_mount_location
+        self.mount_info = MountInfo(
+            local_mount_location=local_mount_location,
+            server_mount_location=server_mount_location
+        )
         self.ip = ip
         self.port = port
+
+        self.__api = API(f'{self.ip}:{self.port}')
+        self.roots = Roots(self.__api, self.mount_info)
 
 
 class ShadeLocal(__Shade):

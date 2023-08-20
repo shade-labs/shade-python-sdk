@@ -1,1 +1,1 @@
-from shade.shade_instance import ShadeRemote, ShadeLocal
+from shade.v1.shade_instance import ShadeRemote, ShadeLocal
