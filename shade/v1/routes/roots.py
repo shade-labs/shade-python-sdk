@@ -32,3 +32,20 @@ class Roots:
         shade is indexing / searching from
         """
         return [RootModel(**root, mount_info=self.__mount_info) for root in self.__api.get('indexing/roots').json()]
+
+    def add_new_root(self, path: Path, collection_id: uuid.UUID = None) -> uuid.UUID:
+        """
+        Add a new root to the index. This will start indexing the root
+        """
+        resp = self.__api.post('indexing/roots', json={
+            'paths': [str(self.__mount_info.translate_filepath_to_server(path))],
+            'collection_ids': [str(collection_id)]
+        }).json()
+
+        return uuid.UUID(resp[0])
+
+    def delete_root(self, root_id: uuid.UUID):
+        """
+        Delete a root from the index. This will stop indexing the root
+        """
+        self.__api.delete(f'indexing/roots/{root_id}')

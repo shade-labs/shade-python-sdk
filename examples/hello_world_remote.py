@@ -11,17 +11,17 @@ from shade import ShadeRemote
 
 
 # Where the mount point exists on my computer
-LOCAL_MOUNT_POINT = Path("/Volumes/studio")
+LOCAL_MOUNT_POINT = Path("/")
 # Where the mount point exists on my remote server
-REMOTE_MOUNT_POINT = Path("/media/shade/Studio Drive")
+REMOTE_MOUNT_POINT = Path("/")
 # The IP of my remote server
 SERVER_IP = 'http://0.0.0.0'
 
 if __name__ == '__main__':
-    shade = ShadeRemote(
+    server = ShadeRemote(
         LOCAL_MOUNT_POINT,
         REMOTE_MOUNT_POINT,
         SERVER_IP
     )
 
-    print(shade.roots.get_roots()[0])
+    print(server.roots.get_roots())
