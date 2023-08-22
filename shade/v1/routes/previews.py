@@ -1,12 +1,29 @@
 # TODO just turn an id into a preview and request preview
 import uuid
 from io import BytesIO
+from pathlib import Path
+from urllib.parse import quote
 
 from PIL import Image
-from urllib.parse import quote
+from pydantic import BaseModel
+
 from shade.v1.api import API
 from shade.v1.types import MountInfo
-from pathlib import Path
+
+
+class Preview(BaseModel):
+    id: uuid.UUID
+    api: API
+
+    def get_image(self) -> Image:
+        response = self.api.get(f'previews/{self.id}')
+
+        image_bytes = BytesIO(response.content)
+
+        return Image.open(image_bytes)
+
+    class Config:
+        arbitrary_types_allowed = True
 
 
 class Previews:
@@ -14,16 +31,22 @@ class Previews:
         self.__api = api
         self.__mount_info = mount_info
 
-    def request_preview(self, path: Path) -> uuid.UUID:
+    def request_preview(self, path: Path) -> Preview:
         path = self.__mount_info.translate_filepath_to_server(path)
 
-        response = self.__api.post(f'previews/{quote(str(path))}')
+        response = self.__api.post(f'previews', params={
+            'path': str(path)
+        })
 
-        return uuid.UUID(response.text.strip('"'))
+        id_ = uuid.UUID(response.text.strip('"'))
+
+        return Preview(
+            id=id_,
+            api=self.__api
+        )
 
     def get_preview(self, preview_id: uuid.UUID) -> Image:
-        response = self.__api.get(f'previews/{preview_id}')
-
-        image_bytes = BytesIO(response.content)
-
-        return Image.open(image_bytes)
+        return Preview(
+            id=preview_id,
+            api=self.__api
+        ).get_image()
