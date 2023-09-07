@@ -1,10 +1,11 @@
 from pathlib import Path
 
 from shade.v1.api import API
+from shade.v1.routes.config import Config
+from shade.v1.routes.indexing import Indexing
 from shade.v1.routes.previews import Previews
 from shade.v1.routes.roots import Roots
 from shade.v1.types import MountInfo
-from shade.v1.routes.indexing import Indexing
 
 
 class __Shade:
@@ -24,6 +25,7 @@ class __Shade:
         self.roots = Roots(self.__api, self.mount_info)
         self.previews = Previews(self.__api, self.mount_info)
         self.indexing = Indexing(self.__api, self.mount_info)
+        self.config = Config(self.__api, self.mount_info)
 
 
 class ShadeLocal(__Shade):

@@ -40,7 +40,7 @@ class Roots:
         """
         resp = self.__api.post('indexing/roots', json={
             'paths': [str(self.__mount_info.translate_filepath_to_server(path))],
-            'collection_ids': [str(collection_id)]
+            'collection_ids': [str(collection_id)] if collection_id else []
         }).json()
 
         return uuid.UUID(resp[0])
