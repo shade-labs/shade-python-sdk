@@ -14,6 +14,7 @@ python = "^3.8"
 requests = "*"
 pydantic = "*"
 pillow = "^10.0.0"
+dataclass-wizard = "^0.22.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
