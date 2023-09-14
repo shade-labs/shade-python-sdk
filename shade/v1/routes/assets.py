@@ -1,5 +1,7 @@
 # TODO Lookup asset by path, get all assets, get an asset by id, update an asset's attributes
 #  rename maybe?
+import uuid
+
 from shade.v1.api import API
 from shade.v1.types import MountInfo
 from shade.v1.models import AssetModel
@@ -15,3 +17,8 @@ class Assets:
         assets = self.__api.get('assets')
 
         return [AssetModel(**asset) for asset in assets.json()]
+
+    def get_asset_by_id(self, id_: uuid.UUID) -> AssetModel:
+        asset = self.__api.get(f'assets/{id_}')
+
+        return AssetModel(**asset.json())
