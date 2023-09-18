@@ -25,8 +25,37 @@ class Assets:
         return AssetModel(**asset.json())
 
     def get_asset_by_path(self, path: Path) -> AssetModel:
+        """
+        TODO handle translation (or not)
+        Get an asset by its path
+
+        :param path: The path to the asset
+        :return: The asset
+        """
         asset = self.__api.get(f'indexing/file', params={
             'path': str(path)
         })
 
         return AssetModel(**asset.json())
+
+    def update_asset(self,
+                     id_: uuid.UUID,
+                     description: str = None,
+                     rating: int = None,
+                     category: str = None,
+                     tags: list = None,) -> None:
+        """
+        Update an asset's attributes
+        :param id_: The id of the asset to update
+        :param description: The new description
+        :param rating: The new rating (0-5)
+        :param category: The new category
+        :param tags: The new tags - this overrides the existing tags
+        :return:
+        """
+        self.__api.put(f'assets/{id_}', json={
+            'description': description,
+            'rating': rating,
+            'category': category,
+            'tags': tags
+        })

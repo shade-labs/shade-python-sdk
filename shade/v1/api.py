@@ -36,6 +36,10 @@ class API:
         return requests.get(self.__ip + '/' + route, params=params)
 
     @handle_server_errors
+    def put(self, route: str, params: dict = None, json: dict = None) -> Any:
+        return requests.put(self.__ip + '/' + route, json=json, params=params)
+
+    @handle_server_errors
     def post(self, route: str, params: dict = None, json: dict = None) -> Any:
         return requests.post(self.__ip + '/' + route, json=json, params=params)
 
