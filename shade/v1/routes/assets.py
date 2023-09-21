@@ -43,7 +43,8 @@ class Assets:
                      description: str = None,
                      rating: int = None,
                      category: str = None,
-                     tags: list = None,) -> None:
+                     tags: list = None,
+                     path: Path = None) -> None:
         """
         Update an asset's attributes
         :param id_: The id of the asset to update
@@ -51,11 +52,14 @@ class Assets:
         :param rating: The new rating (0-5)
         :param category: The new category
         :param tags: The new tags - this overrides the existing tags
+        :param path: The new path - this does NOT move the file but can be useful for updating the path if it has
+         changed
         :return:
         """
         self.__api.put(f'assets/{id_}', json={
             'description': description,
             'rating': rating,
             'category': category,
-            'tags': tags
+            'tags': tags,
+            'path': str(path)
         })
