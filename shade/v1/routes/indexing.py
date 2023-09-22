@@ -1,4 +1,5 @@
-# TODO pause, unpause indexing, resync, indexing status / queue size, reset
+# TODO pause, unpause indexing, resync, indexing status / queue size,
+#  reset
 from shade.v1.api import API
 from shade.v1.types import MountInfo
 
@@ -38,3 +39,13 @@ class Indexing:
         :return: The queue
         """
         return self.__api.get('indexing/queue').json()
+
+    def reset_indexing(self):
+        """
+        Reset the indexing process.
+        This will remove previews as well.
+
+        Warning this is a destructive action
+        :return:
+        """
+        self.__api.post('indexing/reset')
