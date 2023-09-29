@@ -13,6 +13,7 @@ class MountInfo(BaseModel):
     def translate_filepath_to_local(self, path: Path) -> Path:
         """
         This will translate a path from the server to the local machine.
+        TODO handle UNC and Windows paths
         """
         # Normalize paths to have the appropriate slash depending on the OS
         normalized_path = str(path).replace('/', os.sep).replace('\\', os.sep)
