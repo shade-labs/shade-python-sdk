@@ -1,5 +1,8 @@
 # TODO pause, unpause indexing, resync, indexing status / queue size,
 #  reset
+import uuid
+from pathlib import Path
+
 from shade.v1.api import API
 from shade.v1.types import MountInfo
 
@@ -49,3 +52,10 @@ class Indexing:
         :return:
         """
         self.__api.post('indexing/reset')
+
+    def queue_single_file(self, path: Path) -> uuid.UUID:
+        response = self.__api.post('indexing/file', json={
+            'path': str(self.__mount_info.translate_filepath_to_server(path))
+        })
+
+        return uuid.UUID(response.text.strip('"'))
