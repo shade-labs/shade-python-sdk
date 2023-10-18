@@ -24,4 +24,14 @@ if __name__ == '__main__':
         SERVER_IP
     )
 
+    # Get the current roots
     print(server.roots.get_roots())
+
+    # Tell the server to start another full sync
+    server.indexing.resync()
+
+    # Example preview request
+    try:
+        server.previews.request_preview(Path("/Users/test/example.jpg"))
+    except Exception:
+        pass
