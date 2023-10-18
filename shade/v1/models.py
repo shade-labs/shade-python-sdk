@@ -140,7 +140,7 @@ class AssetModel(BaseModel):
     file_created: Optional[datetime]
     file_modified: Optional[datetime]
 
-    timestamp: int = None
+    # timestamp: datetime = None
 
     path: str
     type: AssetType

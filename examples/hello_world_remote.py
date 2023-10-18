@@ -35,3 +35,9 @@ if __name__ == '__main__':
         server.previews.request_preview(Path("/Users/test/example.jpg"))
     except Exception:
         pass
+
+    print("Getting all assets, this could take awhile")
+    assets = server.assets.get_all_assets()
+
+    for asset in assets:
+        print(assets)
