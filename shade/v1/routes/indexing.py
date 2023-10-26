@@ -1,5 +1,6 @@
 # TODO pause, unpause indexing, resync, indexing status / queue size,
 #  reset
+import time
 import uuid
 from pathlib import Path
 
@@ -59,3 +60,15 @@ class Indexing:
         })
 
         return uuid.UUID(response.text.strip('"'))
+
+    def wait_for_indexing(self):
+        """
+        Waits for the current indexing job to finish
+        """
+        while True:
+            status = self.status()
+            if status['state'] == 'IDLE':
+                break
+            print(f"Waiting for indexing to finish, {status['state']}. "
+                  f"Progress: {status['progress']}/{status['total']}")
+            time.sleep(1)

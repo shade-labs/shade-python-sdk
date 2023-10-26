@@ -36,7 +36,7 @@ class ShadeLocal(__Shade):
     """
     A local instance to connect to. This will do no filepath translation.
     """
-    def __init__(self, ip: str = 'http://127.0.0.0', port: int = 9082):
+    def __init__(self, ip: str = 'http://localhost', port: int = 9082):
         super().__init__(
             Path('/'),
             Path('/'),

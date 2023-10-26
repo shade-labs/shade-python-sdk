@@ -2,7 +2,6 @@
 import uuid
 from io import BytesIO
 from pathlib import Path
-from urllib.parse import quote
 
 from PIL import Image
 from pydantic import BaseModel

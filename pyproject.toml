@@ -17,7 +17,7 @@ pillow = "^10.0.0"
 dataclass-wizard = "^0.22.2"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
