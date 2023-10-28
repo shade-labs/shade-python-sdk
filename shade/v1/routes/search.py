@@ -5,6 +5,7 @@ from typing import List, Optional
 from shade.v1.api import API
 from shade.v1.models import AssetModel
 from shade.v1.types import MountInfo
+from pathlib import Path
 
 
 class Search:
@@ -64,3 +65,7 @@ class Search:
     def similar(self, asset_id: uuid.UUID):
         return [AssetModel(**asset, mount_info=self.__mount_info) for asset in
                 self.__api.get(f'assets/{asset_id}/similar').json()]
+
+    def list_assets_in_folder(self, path: Path, recursive=False) -> List[AssetModel]:
+        return self.search(folder=path,
+                           recursive=recursive)

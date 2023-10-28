@@ -56,7 +56,10 @@ assets = [
     # Video
     'https://storage.googleapis.com/shade-test-assets/video/coverr-berlin-underground-train-7268-original.mp4',
 
-    # TODO braw r3d
+    # R3D
+    'https://storage.googleapis.com/shade-test-assets/video/braw-r3d/A002_C305_0523UB_001.R3D'
+
+    # TODO braw
 ]
 
 
@@ -83,18 +86,19 @@ def download_file(url: str, folder: Path) -> Path:
     return asset_path
 
 
-def download_files(urls: List[str]) -> Path:
+def download_files(urls: List[str]) -> List[Path]:
     """
     Download all of the files from the given list of urls
     """
     # Make the data dir if it doesn't exist
     download_folder = Path('./data').resolve()
     download_folder.mkdir(parents=True, exist_ok=True)
+    download_paths = []
     for url in urls:
         print(f"Downloading: {url}")
-        download_file(url, download_folder)
+        download_paths.append(download_file(url, download_folder))
 
-    return download_folder
+    return download_paths
 
 
 def test_indexing():
@@ -102,19 +106,25 @@ def test_indexing():
     Megatest to just download all the files, then add the root, then assert the document for each one depending on type
     """
     global assets
-    # download_files(assets)
+    download_paths = download_files(assets)
 
     backend = ShadeLocal()
 
-    # backend.roots.add_new_root(Path('./data').resolve())
+    try:
+        backend.roots.add_new_root(Path('./data').resolve())
 
-    backend.indexing.resync()
+        backend.indexing.resync()
+    except Exception as e:
+        print(f"Small issue: {e}")
 
     # Now wait for indexing to finish
     backend.indexing.wait_for_indexing()
 
     # Now assert that all the files are indexed
-    for asset in backend.assets.get_all_assets():
+    for path in download_paths:
+        # They should all get indexed!
+        print(f"Getting asset at {path}")
+        asset = backend.assets.get_asset_by_path(path)
         # Now basically just assert that the asset is correct
         assert asset.id is not None
         assert asset.path is not None
@@ -130,3 +140,11 @@ def test_indexing():
             assert asset.preview_images
             assert asset.tags
             assert asset.description
+
+    data_folder = download_paths[0].parent
+    files = backend.search.list_assets_in_folder(data_folder)
+
+    print(len(files))
+    print(files)
+
+    assert len(files) == len(list(data_folder.iterdir()))

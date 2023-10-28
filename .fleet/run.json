@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "type": "python-tests",
+            "name": "Test Server",
+            "arguments": [
+                "-s",
+                "./tests/server"
+            ],
+            "testFramework": "pytest"
+        },
+    ]
+}
