@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-shade-sdk-tests = "tests.__main__:main"
+shade-python-sdk-test = "tests.__main__:main"
 
 
 [tool.poetry.dependencies]
