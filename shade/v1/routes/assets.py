@@ -1,3 +1,4 @@
+import time
 import uuid
 
 from shade.v1.api import API
@@ -61,3 +62,17 @@ class Assets:
             'tags': tags,
             'path': str(path)
         })
+
+    def wait_for_asset(self, path: Path, timeout: int = 60) -> AssetModel:
+        """
+        Waits for the current indexing job to finish
+        """
+        start = time.time()
+        while time.time() < start + timeout:
+            try:
+                return self.get_asset_by_path(path)
+            except Exception:
+                print(f"Waiting for asset to index: {path}")
+            time.sleep(1)
+
+        raise Exception(f"Timed out waiting for asset to index: {path}")

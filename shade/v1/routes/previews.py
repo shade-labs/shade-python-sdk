@@ -37,7 +37,7 @@ class Previews:
             'path': str(path)
         })
 
-        id_ = uuid.UUID(response.text.strip('"'))
+        id_ = uuid.UUID(response.json())
 
         return Preview(
             id=id_,

@@ -32,7 +32,7 @@ class API:
         self.__ip = ip_
 
     @handle_server_errors
-    def eet(self, route: str, params: dict = None) -> Any:
+    def get(self, route: str, params: dict = None) -> Any:
         return requests.get(self.__ip + '/' + route, params=params)
 
     @handle_server_errors

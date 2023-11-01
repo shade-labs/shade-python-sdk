@@ -12,4 +12,4 @@ class Server:
         self.__mount_info = mount_info
 
     def status(self) -> str:
-        return self.__api.get('/status').text
+        return self.__api.get('status').json()

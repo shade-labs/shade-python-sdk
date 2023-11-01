@@ -8,6 +8,7 @@ from shade.v1.routes.roots import Roots
 from shade.v1.types import MountInfo
 from shade.v1.routes.assets import Assets
 from shade.v1.routes.search import Search
+from shade.v1.routes.server import Server
 
 
 class __Shade:

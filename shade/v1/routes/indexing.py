@@ -59,7 +59,7 @@ class Indexing:
             'path': str(self.__mount_info.translate_filepath_to_server(path))
         })
 
-        return uuid.UUID(response.text.strip('"'))
+        return uuid.UUID(response.json())
 
     def wait_for_indexing(self):
         """
@@ -72,3 +72,5 @@ class Indexing:
             print(f"Waiting for indexing to finish, {status['state']}. "
                   f"Progress: {status['progress']}/{status['total']}")
             time.sleep(1)
+
+

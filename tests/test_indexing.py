@@ -8,6 +8,7 @@ import pytest
 
 from shade import ShadeLocal
 from shade.v1.models import AssetType
+from shade.v1.api import APIException
 
 
 @pytest.mark.parametrize('asset_name', [
@@ -55,16 +56,14 @@ from shade.v1.models import AssetType
 def test_index_asset(test_assets: Path, backend: ShadeLocal, asset_name: str):
     asset_path = test_assets / asset_name
 
-    backend.roots.add_new_root(asset_path)
+    root_id = backend.roots.add_new_root(asset_path)
 
     # do our best to clean up. nobody is perfect.
     # anything running the test suite should use an ephemeral database anyhow,
     # this is mostly just to get more surface area on the tests for free
     try:
         backend.indexing.resync()
-        backend.indexing.wait_for_indexing()
-
-        asset = backend.assets.get_asset_by_path(asset_path)
+        asset = backend.assets.wait_for_asset(asset_path)
         assert asset, "Asset was not indexed"
 
         assert asset.id
@@ -81,7 +80,7 @@ def test_index_asset(test_assets: Path, backend: ShadeLocal, asset_name: str):
         assert asset.tags
         assert asset.description
     finally:
-        backend.roots.delete_root(asset_path)
-        asset = backend.assets.get_asset_by_path(asset_path)
-        assert not asset, "Asset was not deleted when root was removed"
+        backend.roots.delete_root(root_id)
+        with pytest.raises(APIException, match='Asset not found'):
+            backend.assets.get_asset_by_path(asset_path)
 
