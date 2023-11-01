@@ -4,12 +4,10 @@ version = "0.2.4"
 description = "Shade SDK"
 authors = ["Shade <shade@shade.inc>"]
 license = "MIT"
-packages = [
-    { include = "shade" }
-]
+packages = [{ include = "shade" }, { include = "tests" }]
 
 [tool.poetry.scripts]
-shade-python-sdk-test = "tests.__main__:main"
+shade-python-sdk-test = "tests.main:main"
 
 
 [tool.poetry.dependencies]
