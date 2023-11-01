@@ -8,16 +8,17 @@ packages = [
     { include = "shade" }
 ]
 
+[tool.poetry.scripts]
+shade-sdk-tests = "tests.__main__:main"
+
 
 [tool.poetry.dependencies]
 python = "^3.8"
-requests = "*"
-pydantic = "*"
 pillow = "^10.0.0"
 dataclass-wizard = "^0.22.2"
-
-[tool.poetry.dev-dependencies]
-pytest = "*"
+pytest = "^7.4.3"
+pydantic = "^2.4.2"
+requests = "^2.31.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

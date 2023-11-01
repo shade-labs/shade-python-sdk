@@ -30,6 +30,7 @@ class __Shade:
         self.config = Config(self.__api, self.mount_info)
         self.assets = Assets(self.__api, self.mount_info)
         self.search = Search(self.__api, self.mount_info)
+        self.server = Server(self.__api, self.mount_info)
 
 
 class ShadeLocal(__Shade):
