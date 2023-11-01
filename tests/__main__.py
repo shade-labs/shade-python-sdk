@@ -2,7 +2,10 @@ import os
 
 import pytest
 
-# run in test directory
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+def main():
+    # run in test directory
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-pytest.main()
+    pytest.main()
+
+main()
