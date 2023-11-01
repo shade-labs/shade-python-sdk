@@ -14,9 +14,8 @@ def backend() -> ShadeLocal:
 
 
 @pytest.fixture(scope="session")
-def test_assets() -> Path:
-    data_dir = Path('data')
-    data_dir.mkdir(exist_ok=True)
+def test_assets(pytestconfig) -> Path:
+    data_dir = pytestconfig.cache.mkdir('test_assets')
     print('Synchronizing test assets from GCS (this may take a while)...')
     res = subprocess.run([
         'gsutil',
