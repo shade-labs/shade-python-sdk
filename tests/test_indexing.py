@@ -13,10 +13,10 @@ from shade.v1.api import APIException
 
 @pytest.mark.parametrize('asset_name', [
     # Audio
-    'audio/Cymatics%20-%20Buildup%20Drums%2019%20-%20140%20BPM.wav',
-    'audio/Cymatics%20-%20Buildup%20Drums%2020%20-%20140%20BPM.wav',
-    'audio/Cymatics%20-%20Buildup%20Drums%2024%20-%20150%20BPM.wav',
-    'audio/Snap%20Sound%20Effect%20%5B%20HD%20%5D.mp3',
+    'audio/Cymatics - Buildup Drums 19 - 140 BPM.wav',
+    'audio/Cymatics - Buildup Drums 20 - 140 BPM.wav',
+    'audio/Cymatics - Buildup Drums 24 - 150 BPM.wav',
+    'audio/Snap Sound Effect [ HD ].mp3',
     'audio/item_purchase.ogg',
 
     # 3D
@@ -29,9 +29,9 @@ from shade.v1.api import APIException
     'image/DSC04274.ARW',
     'image/FullSizeRender.heic',
     'image/android.demo-popover.gif',
-    'image/photo-1685361063181-1d0471c063a9%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dcrop%26fm%3Djpg%26h%3D1130%26ixid%3DMnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODQ3Ng%26ixlib%3Drb-4.0.3%26q%3D80%26utm_campaign%3Dapi-credit%26utm_medium%3Dreferral%26utm_source%3Dunsplash_source%26w%3D1920.jpg',
-    'image/photo-1686466444490-19b4d3a0aba2%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dcrop%26fm%3Djpg%26h%3D1095%26ixid%3DMnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODIzMw%26ixlib%3Drb-4.0.3%26q%3D80%26utm_campaign%3Dapi-credit%26utm_medium%3Dreferral%26utm_source%3Dunsplash_source%26w%3D1920.jpg',
-    'image/photo-1686610620643-0ba20d31b6f5%3Fcrop%3Dentropy%26cs%3Dtinysrgb%26fit%3Dcrop%26fm%3Djpg%26h%3D1120%26ixid%3DMnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODI2Mg%26ixlib%3Drb-4.0.3%26q%3D80%26utm_campaign%3Dapi-credit%26utm_medium%3Dreferral%26utm_source%3Dunsplash_source%26w%3D1920.jpg',
+    'image/photo-1685361063181-1d0471c063a9?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1130&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODQ3Ng&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1920.jpg',
+    'image/photo-1686466444490-19b4d3a0aba2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1095&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODIzMw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1920.jpg',
+    'image/photo-1686610620643-0ba20d31b6f5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1120&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODI2Mg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1920.jpg',
     'image/schema.webp',
 
     # EXR
@@ -83,4 +83,3 @@ def test_index_asset(test_assets: Path, backend: ShadeLocal, asset_name: str):
         backend.roots.delete_root(root_id)
         with pytest.raises(APIException, match='Asset not found'):
             backend.assets.get_asset_by_path(asset_path)
-
