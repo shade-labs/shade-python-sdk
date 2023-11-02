@@ -5,10 +5,10 @@ import pytest
 
 
 def main():
-    # run in test directory
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-    code = pytest.main()
+    code = pytest.main(args=[
+        os.path.dirname(os.path.abspath(__file__)),
+        *sys.argv[1:]  # pass through any arguments
+    ])
     sys.exit(code)
 
 
