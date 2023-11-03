@@ -1,3 +1,4 @@
+import os
 import subprocess
 from pathlib import Path
 
@@ -8,7 +9,7 @@ from shade import ShadeLocal
 
 @pytest.fixture(scope="session")
 def backend() -> ShadeLocal:
-    backend = ShadeLocal()
+    backend = ShadeLocal(port=int(os.getenv('SHADE_PORT', 9082)))
     assert backend.server.status() == 'online'
     return backend
 
