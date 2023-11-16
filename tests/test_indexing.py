@@ -19,11 +19,6 @@ from shade.v1.api import APIException
     'audio/Snap Sound Effect [ HD ].mp3',
     'audio/item_purchase.ogg',
 
-    # 3D
-    '3d/CC1_Sketchfab.fbx',
-    '3d/cathedral.glb',
-    '3d/fire_extinguisher_untextured.obj',
-
     # Images
     'image/DSC01974.ARW',
     'image/DSC04274.ARW',
@@ -50,8 +45,14 @@ from shade.v1.api import APIException
     # Video
     'video/coverr-berlin-underground-train-7268-original.mp4',
 
-    # braw/R3D
-    'video/braw-r3d/A002_C305_0523UB_001.R3D'
+    # TODO add in full build for these to run
+    # # braw/R3D
+    # 'video/braw-r3d/A002_C305_0523UB_001.R3D'
+    #
+    # # 3D
+    # '3d/CC1_Sketchfab.fbx',
+    # '3d/cathedral.glb',
+    # '3d/fire_extinguisher_untextured.obj',
 ])
 def test_index_asset(test_assets: Path, backend: ShadeLocal, asset_name: str):
     asset_path = test_assets / asset_name
