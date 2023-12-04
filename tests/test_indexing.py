@@ -24,9 +24,9 @@ from shade.v1.api import APIException
     'image/DSC04274.ARW',
     'image/FullSizeRender.heic',
     'image/android.demo-popover.gif',
-    'image/photo-1685361063181-1d0471c063a9?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1130&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODQ3Ng&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1920.jpg',
-    'image/photo-1686466444490-19b4d3a0aba2?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1095&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODIzMw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1920.jpg',
-    'image/photo-1686610620643-0ba20d31b6f5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1120&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY4Njg4ODI2Mg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1920.jpg',
+    'image/photo-1.jpg',
+    'image/photo-2.jpg',
+    'image/photo-3.jpg',
     'image/schema.webp',
 
     # EXR
