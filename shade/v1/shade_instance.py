@@ -1,14 +1,15 @@
 from pathlib import Path
 
 from shade.v1.api import API
+from shade.v1.routes.assets import Assets
 from shade.v1.routes.config import Config
+from shade.v1.routes.convert import Convert
 from shade.v1.routes.indexing import Indexing
 from shade.v1.routes.previews import Previews
 from shade.v1.routes.roots import Roots
-from shade.v1.types import MountInfo
-from shade.v1.routes.assets import Assets
 from shade.v1.routes.search import Search
 from shade.v1.routes.server import Server
+from shade.v1.types import MountInfo
 
 
 class __Shade:
@@ -32,6 +33,7 @@ class __Shade:
         self.assets = Assets(self.__api, self.mount_info)
         self.search = Search(self.__api, self.mount_info)
         self.server = Server(self.__api, self.mount_info)
+        self.convert = Convert(self.__api, self.mount_info)
 
 
 class ShadeLocal(__Shade):
