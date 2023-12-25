@@ -76,3 +76,10 @@ class Assets:
             time.sleep(1)
 
         raise Exception(f"Timed out waiting for asset to index: {path}")
+
+    def delete_all_assets(self) -> None:
+        """
+        WARNING deletes all assets in the database
+        :return:
+        """
+        self.__api.delete(f'assets')
