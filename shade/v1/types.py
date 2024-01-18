@@ -15,49 +15,51 @@ class MountInfo(BaseModel):
         This will translate a path from the server to the local machine.
         TODO handle UNC and Windows paths
         """
-        # Normalize paths to have the appropriate slash depending on the OS
-        normalized_path = str(path).replace('/', os.sep).replace('\\', os.sep)
-        normalized_server_mount = str(self.server_mount_location).replace('/', os.sep).replace('\\', os.sep)
-        normalized_local_mount = str(self.local_mount_location).replace('/', os.sep).replace('\\', os.sep)
-
-        # Consider case insensitivity (primarily for Windows)
-        if Path(normalized_path).drive or normalized_path.startswith('\\\\'):
-            # We're on Windows or dealing with a UNC path
-            normalized_path = normalized_path.lower()
-            normalized_server_mount = normalized_server_mount.lower()
-
-        if normalized_path.startswith(normalized_server_mount):
-            # Replace the server mount with the local mount
-            translated_path = normalized_path.replace(normalized_server_mount, normalized_local_mount, 1)
-            # Return the resolved path (normalizing any .. or .)
-            return Path(translated_path).resolve()
-        else:
-            # If the path doesn't start with the server mount, return the original path
-            return path
+        return path
+        # # Normalize paths to have the appropriate slash depending on the OS
+        # normalized_path = str(path).replace('/', os.sep).replace('\\', os.sep)
+        # normalized_server_mount = str(self.server_mount_location).replace('/', os.sep).replace('\\', os.sep)
+        # normalized_local_mount = str(self.local_mount_location).replace('/', os.sep).replace('\\', os.sep)
+        #
+        # # Consider case insensitivity (primarily for Windows)
+        # if Path(normalized_path).drive or normalized_path.startswith('\\\\'):
+        #     # We're on Windows or dealing with a UNC path
+        #     normalized_path = normalized_path.lower()
+        #     normalized_server_mount = normalized_server_mount.lower()
+        #
+        # if normalized_path.startswith(normalized_server_mount):
+        #     # Replace the server mount with the local mount
+        #     translated_path = normalized_path.replace(normalized_server_mount, normalized_local_mount, 1)
+        #     # Return the resolved path (normalizing any .. or .)
+        #     return Path(translated_path).resolve()
+        # else:
+        #     # If the path doesn't start with the server mount, return the original path
+        #     return path
 
     def translate_filepath_to_server(self, path: Path) -> Path:
         """
         This will translate a path from the local machine to the server's perspective.
         """
-        # Normalize paths to have the appropriate slash depending on the OS
-        normalized_path = str(path).replace('/', os.sep).replace('\\', os.sep)
-        normalized_server_mount = str(self.server_mount_location).replace('/', os.sep).replace('\\', os.sep)
-        normalized_local_mount = str(self.local_mount_location).replace('/', os.sep).replace('\\', os.sep)
-
-        # Consider case insensitivity (primarily for Windows)
-        if Path(normalized_path).drive or normalized_path.startswith('\\\\'):
-            # We're on Windows or dealing with a UNC path
-            normalized_path = normalized_path.lower()
-            normalized_local_mount = normalized_local_mount.lower()
-
-        if normalized_path.startswith(normalized_local_mount):
-            # Replace the local mount with the server mount
-            translated_path = normalized_path.replace(normalized_local_mount, normalized_server_mount, 1)
-            # Return the resolved path (normalizing any .. or .)
-            return Path(translated_path).resolve()
-        else:
-            # If the path doesn't start with the local mount, return the original path
-            return path
+        return path
+        # # Normalize paths to have the appropriate slash depending on the OS
+        # normalized_path = str(path).replace('/', os.sep).replace('\\', os.sep)
+        # normalized_server_mount = str(self.server_mount_location).replace('/', os.sep).replace('\\', os.sep)
+        # normalized_local_mount = str(self.local_mount_location).replace('/', os.sep).replace('\\', os.sep)
+        #
+        # # Consider case insensitivity (primarily for Windows)
+        # if Path(normalized_path).drive or normalized_path.startswith('\\\\'):
+        #     # We're on Windows or dealing with a UNC path
+        #     normalized_path = normalized_path.lower()
+        #     normalized_local_mount = normalized_local_mount.lower()
+        #
+        # if normalized_path.startswith(normalized_local_mount):
+        #     # Replace the local mount with the server mount
+        #     translated_path = normalized_path.replace(normalized_local_mount, normalized_server_mount, 1)
+        #     # Return the resolved path (normalizing any .. or .)
+        #     return Path(translated_path).resolve()
+        # else:
+        #     # If the path doesn't start with the local mount, return the original path
+        #     return path
 
 
 class ServerResponse(BaseModel):
