@@ -20,3 +20,16 @@ class Config:
         :return: None
         """
         self.__api.post('config', json=config)
+
+    # TODO move this to a "models" file
+    def enable_all_models(self) -> None:
+        """
+        Enable all models
+        :return: None
+        """
+        config_ = self.get_config()
+
+        models_ = config_['models']
+
+        for model in models_:
+            self.__api.post(f'models/{model}')
