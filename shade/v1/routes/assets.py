@@ -71,8 +71,8 @@ class Assets:
         while time.time() < start + timeout:
             try:
                 return self.get_asset_by_path(path)
-            except Exception:
-                print(f"Waiting for asset to index: {path}")
+            except Exception as e:
+                print(f"Waiting for asset to index: {path}, not yet available because: {e}")
             time.sleep(1)
 
         raise Exception(f"Timed out waiting for asset to index: {path}")

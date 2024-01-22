@@ -153,7 +153,6 @@ class AssetModel(BaseModel):
     objects: List[object]
     transcription: Optional[str]
     rating: Optional[float]
-    blurhash: str
     palette: List[List[int]]
     ocr: Optional[str]
     category: Optional[str]

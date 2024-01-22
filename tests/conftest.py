@@ -12,7 +12,11 @@ def backend() -> ShadeLocal:
     backend = ShadeLocal(port=int(os.getenv('SHADE_PORT', 9082)))
     assert backend.server.status() == 'online'
 
-    backend.models.enable_all_models()
+    # backend.models.enable_all_models()
+    backend.models.enable_model('blip')
+    backend.models.enable_model('audio')
+    backend.models.enable_model('text')
+    backend.models.enable_model('braw')
 
     return backend
 

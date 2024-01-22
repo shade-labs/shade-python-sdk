@@ -59,6 +59,8 @@ def test_index_asset(test_assets: Path, backend: ShadeLocal, asset_name: str):
 
     root_id = backend.roots.add_new_root(asset_path)
 
+    assert root_id in [r.id for r in backend.roots.get_roots()]
+
     # do our best to clean up. nobody is perfect.
     # anything running the test suite should use an ephemeral database anyhow,
     # this is mostly just to get more surface area on the tests for free
