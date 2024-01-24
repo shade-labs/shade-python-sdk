@@ -1,3 +1,5 @@
 pydantic
 requests
 dataclass-wizard
+pillow
+pytest
