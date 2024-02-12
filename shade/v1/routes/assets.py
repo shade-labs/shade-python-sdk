@@ -83,3 +83,8 @@ class Assets:
         :return:
         """
         self.__api.delete(f'assets')
+
+    def get_faces(self, id_: uuid.UUID) -> List[dict]:
+        faces = self.__api.get(f'assets/{id_}/faces')
+
+        return faces.json()

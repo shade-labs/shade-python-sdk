@@ -14,10 +14,15 @@ shade-python-sdk-tests = "tests.main:main"
 python = "^3.8"
 pillow = "^10.0.0"
 dataclass-wizard = "^0.22.2"
-pytest = "^7.4.3"
+pytest = "^8.0.0"
 pydantic = "^2.4.2"
 requests = "^2.31.0"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = [
+    "poetry-core>=1.0.0"
+]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+google-cloud-storage = "^2.14.0"
