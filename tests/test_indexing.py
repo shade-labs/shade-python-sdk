@@ -8,10 +8,6 @@ from pathlib import Path
 import pytest
 
 from shade import ShadeLocal
-from shade.v1.models import AssetType
-from shade.v1.api import APIException
-from typing import List
-import os
 
 
 def wait_for_no_jobs(status_response: dict):
@@ -24,15 +20,18 @@ def wait_for_no_jobs(status_response: dict):
     return True
 
 
-def wait_for_indexing(backend: ShadeLocal):
-    while True:
-        status_response = backend.indexing.status()
-        if wait_for_no_jobs(status_response):
-            time.sleep(3)
-            # Do it again for good measure haha need an endpoint for deeper status
-            if wait_for_no_jobs(backend.indexing.status()):
-                break
-        time.sleep(3)
+def wait_for_indexing(backend, count=0):
+    if count >= 20:
+        return
+
+    status_response = backend.indexing.status()
+    if wait_for_no_jobs(status_response):
+        time.sleep(0.25)
+        wait_for_indexing(backend, count + 1)
+    else:
+        time.sleep(0.25)
+        wait_for_indexing(backend, count)
+
 
 # @pytest.mark.parametrize('asset_name', [
 #     # Audio

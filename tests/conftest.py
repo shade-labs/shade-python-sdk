@@ -1,7 +1,7 @@
 import os
-import subprocess
 from pathlib import Path
 from typing import List
+
 import pytest
 from google.cloud import storage
 
@@ -22,21 +22,32 @@ def backend() -> ShadeLocal:
     return backend
 
 
-@pytest.fixture(scope="session")
-def test_assets(pytestconfig) -> Path:
-    data_dir = pytestconfig.cache.mkdir('test_assets')
-    print('Synchronizing test assets from GCS (this may take a while)...')
-    res = subprocess.run([
-        'gsutil',
-        'rsync',
-        '-r', '-d',
-        'gs://shade-test-assets/',
-        str(data_dir.resolve())
-    ])
-    if res.returncode != 0:
-        pytest.skip('Failed to download demo assets. Running test suite without them.')
+@pytest.fixture
+def demo_file_path(pytestconfig, demo_file_name: str, tmp_path) -> Path:
+    """
+    Fixture to request path to test asset.
 
-    return data_dir.resolve()
+    :param demo_file_name: name of the asset.
+    """
+    cache_dir = pytestconfig.cache.mkdir("demo_assets")
+    asset_path = cache_dir / demo_file_name
+    # TODO check for changes in the remote asset
+    if not asset_path.exists():
+        print(
+            f"downloading demo asset {demo_file_name} because it was not found in the cache"
+        )
+        storage_client = storage.Client.create_anonymous_client()
+        bucket = storage_client.bucket("shade-test-assets")
+        blob = bucket.blob(demo_file_name)
+        asset_path.parent.mkdir(parents=True, exist_ok=True)
+        blob.download_to_filename(str(asset_path))
+
+    # copy it somewhere safe, in case the test modifies it
+    tmp_asset_path = tmp_path / demo_file_name
+    tmp_asset_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_asset_path.write_bytes(asset_path.read_bytes())
+    yield tmp_asset_path
+    tmp_asset_path.unlink(missing_ok=True)
 
 
 @pytest.fixture
@@ -63,7 +74,6 @@ def demo_file_paths(pytestconfig, demo_file_names: List[str], tmp_path) -> List[
             blob.download_to_filename(str(asset_path))
 
         # copy it somewhere safe, in case the test modifies it
-        # we could use tempfile here but i'm lazy
         tmp_asset_path = tmp_path / demo_file_name
         tmp_asset_path.parent.mkdir(parents=True, exist_ok=True)
         tmp_asset_path.write_bytes(asset_path.read_bytes())
