@@ -11,8 +11,7 @@ from shade import ShadeLocal
     'image/photo-3.jpg',
     'image/exr-hdr-weird/rgba_half.exr',
 ])
-@pytest.mark.anyio
-async def test_clap_audio_job(
+def test_clap_audio_job(
         demo_file_path,
         backend: ShadeLocal,
         tmp_path
