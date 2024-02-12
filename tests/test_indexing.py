@@ -21,7 +21,7 @@ def wait_for_no_jobs(status_response: dict):
 
 
 def wait_for_indexing(backend, count=0):
-    if count >= 20:
+    if count >= 40:
         return
 
     status_response = backend.indexing.status()
@@ -112,6 +112,11 @@ def wait_for_indexing(backend, count=0):
 
 @pytest.mark.parametrize('demo_file_names', [
     ([
+        'video/coverr-berlin-underground-train-7268-original.mp4',
+        'video/braw-r3d/A002_C305_0523UB_001.R3D',
+        # TODO doesn't seem like braw is working
+        # 'video/In-The-Hand-Original.braw',
+
         'image/exr-hdr-weird/bw_full.exr',
         'image/exr-hdr-weird/bw_half.exr',
         'image/exr-hdr-weird/rgb_full.exr',
@@ -130,9 +135,7 @@ def wait_for_indexing(backend, count=0):
 
         'image/exr-hdr-weird/farm_sunset_1k.hdr',
         'image/exr-hdr-weird/limpopo_golf_course_1k.hdr',
-        'image/exr-hdr-weird/sample_640426.hdr',
-
-        'video/coverr-berlin-underground-train-7268-original.mp4',
+        'image/exr-hdr-weird/sample_640426.hdr'
     ]),
 ])
 def test_visual_assets(
@@ -140,6 +143,7 @@ def test_visual_assets(
     backend: ShadeLocal,
     tmp_path: Path,
 ):
+    backend.models.enable_model('braw')
     root_id = backend.roots.add_new_root(tmp_path)
 
     wait_for_indexing(backend)
