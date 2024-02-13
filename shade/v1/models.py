@@ -12,6 +12,16 @@ from pydantic import BaseModel
 from pydantic import validator
 
 
+class Jobs(Enum):
+    PREVIEWS = 'preview_job_state'
+    METADATA = 'metadata_job_state'
+    CORE = 'core_vision_job_state'
+    COLOR_PALETTE = 'color_palette_job_state'
+    AUDIO = 'audio_job_state'
+    TEXT = 'text_job_state'
+    FACIAL_RECOGNITION = 'facial_recognition_job_state'
+
+
 class License(Enum):
     """Asset Licenses"""
     CC_BY = 'cc-by'
@@ -169,6 +179,14 @@ class AssetModel(BaseModel):
 
     proxy_path: Optional[str]
     ai_indexed: bool
+
+    preview_job_state: str
+    metadata_job_state: str
+    core_vision_job_state: str
+    color_palette_job_state: str
+    audio_job_state: str
+    text_job_state: str
+    facial_recognition_job_state: str
 
     comments: List[CommentModel]
 

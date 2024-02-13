@@ -8,29 +8,29 @@ from pathlib import Path
 import pytest
 
 from shade import ShadeLocal
+from typing import List
+from shade.v1.models import Jobs
 
 
-def wait_for_no_jobs(status_response: dict):
-    if status_response['state'] != 'IDLE':
-        return False
-    for job in status_response['jobs']:
-        if job['running']:
-            return False
+def wait_for_jobs(backend: ShadeLocal, jobs: List[Jobs], paths: List[Path] = None):
+    """
+    Get all assets and check to make sure that each one of the jobs on the assets is either completed or failed
+    """
+    time.sleep(1)
+    job_keys = [job.value for job in jobs]
 
-    return True
+    def __asset_has_jobs(asset):
+        for job in job_keys:
+            if getattr(asset, job) not in ('COMPLETED', 'FAILED'):
+                return False
+        return True
 
-
-def wait_for_indexing(backend, count=0):
-    if count >= 40:
-        return
-
-    status_response = backend.indexing.status()
-    if wait_for_no_jobs(status_response):
-        time.sleep(0.25)
-        wait_for_indexing(backend, count + 1)
-    else:
-        time.sleep(0.25)
-        wait_for_indexing(backend, count)
+    while True:
+        assets = [backend.assets.get_asset_by_path(asset) for asset in paths]
+        if not all([__asset_has_jobs(asset) for asset in assets]):
+            time.sleep(1)
+        else:
+            break
 
 
 # @pytest.mark.parametrize('asset_name', [
@@ -146,7 +146,12 @@ def test_visual_assets(
     backend.models.enable_model('braw')
     root_id = backend.roots.add_new_root(tmp_path)
 
-    wait_for_indexing(backend)
+    wait_for_jobs(backend, [
+        Jobs.PREVIEWS,
+        Jobs.CORE,
+        Jobs.COLOR_PALETTE,
+        Jobs.METADATA
+    ], demo_file_paths)
 
     try:
         for asset in demo_file_paths:
@@ -158,6 +163,7 @@ def test_visual_assets(
             assert asset_.type
             assert asset_.signature
             assert asset_.ai_indexed
+            assert len(asset_.palette) > 0
 
             assert len(asset_.preview_images) > 0
 
@@ -184,7 +190,10 @@ def test_audio_assets(
 
     root_id = backend.roots.add_new_root(tmp_path)
 
-    wait_for_indexing(backend)
+    wait_for_jobs(backend, [
+        Jobs.METADATA,
+        Jobs.AUDIO
+    ], demo_file_paths)
 
     try:
         for asset in demo_file_paths:
@@ -218,7 +227,10 @@ def test_text_assets(
 
     root_id = backend.roots.add_new_root(tmp_path)
 
-    wait_for_indexing(backend)
+    wait_for_jobs(backend, [
+        Jobs.METADATA,
+        Jobs.TEXT
+    ], demo_file_paths)
 
     try:
         for asset in demo_file_paths:
@@ -246,7 +258,10 @@ def test_facial_recognition(
 
     root_id = backend.roots.add_new_root(tmp_path)
 
-    wait_for_indexing(backend)
+    wait_for_jobs(backend, [
+        Jobs.METADATA,
+        Jobs.FACIAL_RECOGNITION
+    ], demo_file_paths)
 
     try:
         for asset in demo_file_paths:
