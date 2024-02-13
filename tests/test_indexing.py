@@ -61,10 +61,10 @@ def test_audio_assets(
         demo_asset: AssetModel,
         backend: ShadeLocal,
 ):
-    wait_for_jobs(backend, [
+    asset = wait_for_jobs(backend, [
         Job.METADATA,
         Job.AUDIO
-    ], [demo_asset])
+    ], [demo_asset])[0]
 
     # assert asset.size_bytes
     assert asset.tags
@@ -79,10 +79,10 @@ def test_text_assets(
         demo_asset: AssetModel,
         backend: ShadeLocal,
 ):
-    wait_for_jobs(backend, [
+    asset = wait_for_jobs(backend, [
         Job.METADATA,
         Job.TEXT
-    ], [demo_asset])
+    ], [demo_asset])[0]
 
     assert asset.size_bytes
 
@@ -93,28 +93,17 @@ def test_text_assets(
 def test_facial_recognition(
         demo_assets: List[AssetModel],
         backend: ShadeLocal,
-        tmp_path: Path,
 ):
-    wait_for_jobs(backend, [
+    assets = wait_for_jobs(backend, [
         Job.METADATA,
         Job.FACIAL_RECOGNITION,
         Job.CORE
-    ], demo_file_paths)
+    ], demo_assets)
 
-    try:
-        for asset in demo_file_paths:
-            asset_ = backend.assets.get_asset_by_path(asset)
-            assert asset_, f"Asset was not indexed: {asset}"
+    # TODO check for individuals
 
-            assert asset_.id
-            assert asset_.path
-            assert asset_.type
-            assert asset_.signature
-            assert asset_.ai_indexed
+    for asset in assets:
+        assert asset.faces_present
 
-            # This is a bit doomed apparently, so just checking facial is completed might be
-            #  enough
-            # faces = backend.assets.get_faces(asset_.id)
-            # assert len(faces) > 0
-    finally:
-        backend.roots.delete_root(root_id)
+        # TODO query/check faces
+        # assert backend.assets.get_faces(asset.id)
