@@ -1,7 +1,6 @@
 import enum
 import uuid
 from datetime import datetime
-from enum import Enum
 from typing import Any
 from typing import Dict
 from typing import List
@@ -12,7 +11,7 @@ from pydantic import BaseModel
 from pydantic import validator
 
 
-class Jobs(Enum):
+class Job(str, enum.Enum):
     PREVIEWS = 'preview_job_state'
     METADATA = 'metadata_job_state'
     CORE = 'core_vision_job_state'
@@ -21,8 +20,14 @@ class Jobs(Enum):
     TEXT = 'text_job_state'
     FACIAL_RECOGNITION = 'facial_recognition_job_state'
 
+class JobState(str, enum.Enum):
+    NOT_STARTED = 'NOT_STARTED'
+    IN_PROGRESS = 'IN_PROGRESS'
+    COMPLETED = 'COMPLETED'
+    FAILED = 'FAILED'
 
-class License(Enum):
+
+class License(str, enum.Enum):
     """Asset Licenses"""
     CC_BY = 'cc-by'
     CC_BY_SA = 'cc-by-sa'
@@ -35,7 +40,7 @@ class License(Enum):
     OTHER = 'other'
 
 
-class AssetType(Enum):
+class AssetType(str, enum.Enum):
     IMAGE = 'IMAGE'
     VIDEO = 'VIDEO'
     AUDIO = 'AUDIO'
@@ -64,7 +69,7 @@ class AssetType(Enum):
     OTHER = 'OTHER'
 
 
-class CollectionType(enum.Enum):
+class CollectionType(str, enum.Enum):
     AUTO = 'auto'
     USER = 'user'
 
@@ -74,7 +79,7 @@ class IndexingQueueItem(BaseModel):
     working: bool
 
 
-class IndexingStatus(Enum):
+class IndexingStatus(str, enum.Enum):
     IDLE = 'IDLE'
     INDEXING = 'INDEXING'
     DOWNLOADING = 'DOWNLOADING'
