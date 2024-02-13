@@ -7,16 +7,32 @@ from pathlib import Path
 
 import pytest
 
+import shade.v1.api
 from shade import ShadeLocal
 from typing import List
 from shade.v1.models import Jobs
+
+
+# Wooo these can all be fixtures
+def wait_for_assets(backend: ShadeLocal, paths: List[Path]):
+    """
+    Wait for assets to be indexed
+    """
+    while True:
+        try:
+            # Make sure they're all there
+            [backend.assets.get_asset_by_path(asset) for asset in paths]
+            break
+        except shade.v1.api.APIException:
+            time.sleep(1)
 
 
 def wait_for_jobs(backend: ShadeLocal, jobs: List[Jobs], paths: List[Path] = None):
     """
     Get all assets and check to make sure that each one of the jobs on the assets is either completed or failed
     """
-    time.sleep(1)
+    wait_for_assets(backend, paths)
+
     job_keys = [job.value for job in jobs]
 
     def __asset_has_jobs(asset):
