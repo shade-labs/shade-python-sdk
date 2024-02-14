@@ -7,10 +7,9 @@ from shade.v1.api import APIException
 
 
 # Wooo these can all be fixtures
-def wait_for_assets(backend: ShadeLocal, paths: List[Path]) -> List[AssetModel]:
+def wait_for_assets(backend: ShadeLocal, paths: List[Path], timeout: int = 30) -> List[AssetModel]:
     """Wait for assets to be indexed"""
     start_time = time.time()
-    timeout = 30
     while time.time() < start_time + timeout:
         try:
             # Make sure they're all there
@@ -25,7 +24,8 @@ def wait_for_assets(backend: ShadeLocal, paths: List[Path]) -> List[AssetModel]:
 def wait_for_jobs(
         backend: ShadeLocal,
         jobs: List[Job],
-        handles: List[Union[Path, AssetModel]]
+        handles: List[Union[Path, AssetModel]],
+        timeout: int = 30
 ) -> List[AssetModel]:
     """Wait for jobs to run on assets"""
 
@@ -33,15 +33,15 @@ def wait_for_jobs(
     paths = [handle.path if isinstance(handle, AssetModel) else handle for handle in handles]
 
     start_time = time.time()
-    timeout = 30
     done = False
 
     while not done and time.time() < start_time + timeout:
         done = True
-        assets = wait_for_assets(backend, paths)
+        assets = wait_for_assets(backend, paths, timeout)
         for asset in assets:
             # if at least one job is not done, try again
             if any(getattr(asset, job) not in (JobState.COMPLETED, JobState.FAILED) for job in jobs):
+                print(f"Waiting for {asset.path} to finish indexing")
                 done = False
                 break
             elif getattr(asset, 'preview_job_state') == JobState.FAILED:

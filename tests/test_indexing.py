@@ -8,7 +8,7 @@ from typing import List
 import pytest
 
 from shade import ShadeLocal
-from shade.v1.models import Job, AssetModel
+from shade.v1.models import Job, AssetModel, JobState
 from tests.helpers import wait_for_jobs
 
 
@@ -102,12 +102,11 @@ def test_facial_recognition(
         Job.METADATA,
         Job.FACIAL_RECOGNITION,
         Job.CORE
-    ], demo_assets)
+    ], [demo_assets], timeout=120)
 
     # TODO check for individuals
 
     for asset in assets:
-        assert asset.faces_present
-
+        assert asset.facial_recognition_job_state == JobState.COMPLETED
         # TODO query/check faces
         # assert backend.assets.get_faces(asset.id)

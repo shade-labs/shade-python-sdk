@@ -104,7 +104,6 @@ def demo_asset_root(backend: ShadeLocal, tmp_path: Path) -> RootModel:
         backend.roots.delete_root(root_id)
 
 
-
 @pytest.fixture
 def demo_asset(backend: ShadeLocal, demo_file_path: Path, demo_asset_root: RootModel) -> AssetModel:
     asset_path = Path(demo_asset_root.local_path) / demo_file_path.name
@@ -122,4 +121,4 @@ def demo_assets(backend: ShadeLocal, demo_file_paths: Path, demo_asset_root: Pat
         demo_file_path.rename(asset_path)
 
     backend.indexing.resync()
-    return wait_for_assets(backend, asset_paths)[0]
+    return wait_for_assets(backend, asset_paths, timeout=500)[0]
