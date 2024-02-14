@@ -1,13 +1,15 @@
-from shade import ShadeLocal
 import time
-from typing import List, Union
 from pathlib import Path
-from shade.v1.models import AssetModel, Job, JobState
+from typing import List, Union
+
+from shade import ShadeLocal
 from shade.v1.api import APIException
+from shade.v1.models import AssetModel, Job, JobState
 
 
-def wait_for_assets(backend: ShadeLocal, paths: List[Path], timeout: int = 30) -> List[AssetModel]:
+def wait_for_assets(backend: ShadeLocal, paths: List[Path]) -> List[AssetModel]:
     """Wait for assets to be indexed"""
+    timeout = 10 + 2 * len(paths)  # seems like enough time
     start_time = time.time()
     while time.time() < start_time + timeout:
         try:
@@ -24,19 +26,19 @@ def wait_for_jobs(
         backend: ShadeLocal,
         jobs: List[Job],
         handles: List[Union[Path, AssetModel]],
-        timeout: int = 30
 ) -> List[AssetModel]:
     """Wait for jobs to run on assets"""
 
     # each handle can be a path or an asset
     paths = [handle.path if isinstance(handle, AssetModel) else handle for handle in handles]
 
+    timeout = 30 + 5 * len(paths)  # seems like enough time
     start_time = time.time()
     done = False
 
     while not done and time.time() < start_time + timeout:
         done = True
-        assets = wait_for_assets(backend, paths, timeout)
+        assets = wait_for_assets(backend, paths)
         for asset in assets:
             # if at least one job is not done, try again
             if any(getattr(asset, job) not in (JobState.COMPLETED, JobState.FAILED) for job in jobs):

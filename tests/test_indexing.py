@@ -6,13 +6,12 @@ referenced
 from typing import List
 
 import pytest
-
 from shade import ShadeLocal
 from shade.v1.models import Job, AssetModel, JobState
 from tests.helpers import wait_for_jobs
 
 
-@pytest.mark.parametrize('demo_file_name', [
+@pytest.mark.parametrize('demo_file_names', [[
     'video/coverr-berlin-underground-train-7268-original.mp4',
     # TODO doesn't seem like braw is working
     'video/braw-r3d/A002_C305_0523UB_001.R3D',
@@ -33,24 +32,24 @@ from tests.helpers import wait_for_jobs
     'image/photo-3.jpg',
     'image/schema.webp',
 
+    # exr's are failing on my machine -matias
     'image/exr-hdr-weird/farm_sunset_1k.hdr',
     'image/exr-hdr-weird/limpopo_golf_course_1k.hdr',
     'image/exr-hdr-weird/sample_640426.hdr'
-])
-def test_visual_assets(
-        demo_asset: AssetModel,
+]])
+def test_visual_assets_batched(
+        demo_assets: List[AssetModel],
         backend: ShadeLocal,
 ):
     # wait for jobs to run
-    asset = wait_for_jobs(backend, [
+    for asset in wait_for_jobs(backend, [
         Job.METADATA, Job.CORE, Job.PREVIEWS, Job.COLOR_PALETTE
-    ], [demo_asset])[0]
-
-    assert asset.signature
-    assert asset.ai_indexed
-    assert asset.palette
-    assert asset.preview_images
-    assert asset.tags
+    ], demo_assets):
+        assert asset.signature
+        assert asset.ai_indexed
+        assert asset.palette
+        assert asset.preview_images
+        assert asset.tags
 
 
 @pytest.mark.parametrize('demo_file_name', [

@@ -1,12 +1,26 @@
 import os
+import random
 from pathlib import Path
 from typing import List
 
 import pytest
+import string
 from google.cloud import storage
 from shade import ShadeLocal
 from shade.v1.models import AssetModel, RootModel
 from tests.helpers import wait_for_assets
+
+
+def rand() -> str:
+    return ''.join(random.choices(string.ascii_lowercase, k=4))
+
+
+def mangle(name: str) -> str:
+    try:
+        path = Path(name)
+    except Exception:
+        return name
+    return f'{path.stem}-{rand()}{path.suffix}'
 
 
 @pytest.fixture(scope="session")
@@ -87,9 +101,9 @@ def demo_file_paths(pytestconfig, demo_file_names: List[str], tmp_path) -> List[
         tmp_asset_path.unlink(missing_ok=True)
 
 
-@pytest.fixture
-def demo_asset_root(backend: ShadeLocal, tmp_path: Path) -> RootModel:
-    root_path = tmp_path / 'asset_root'
+@pytest.fixture(scope='session')
+def demo_asset_root(backend: ShadeLocal, tmpdir_factory) -> RootModel:
+    root_path = Path(tmpdir_factory.mktemp('asset_root'))
     root_path.mkdir(parents=True, exist_ok=True)
     root_id = backend.roots.add_new_root(root_path)
 
@@ -106,19 +120,29 @@ def demo_asset_root(backend: ShadeLocal, tmp_path: Path) -> RootModel:
 
 @pytest.fixture
 def demo_asset(backend: ShadeLocal, demo_file_path: Path, demo_asset_root: RootModel) -> AssetModel:
-    asset_path = Path(demo_asset_root.local_path) / demo_file_path.name
+    asset_path = Path(demo_asset_root.local_path) / mangle(demo_file_path.name)
     demo_file_path.rename(asset_path)
 
     backend.indexing.resync()
-    return wait_for_assets(backend, [asset_path])[0]
+    try:
+        yield wait_for_assets(backend, [asset_path])[0]
+    finally:
+        asset_path.unlink(missing_ok=True)
 
 
 @pytest.fixture
 def demo_assets(backend: ShadeLocal, demo_file_paths: Path, demo_asset_root: Path) -> AssetModel:
     root_path = Path(demo_asset_root.local_path)
-    asset_paths = [root_path / demo_file_path.name for demo_file_path in demo_file_paths]
+    asset_paths = [
+        root_path / mangle(demo_file_path.name)
+        for demo_file_path in demo_file_paths
+    ]
     for demo_file_path, asset_path in zip(demo_file_paths, asset_paths):
         demo_file_path.rename(asset_path)
 
     backend.indexing.resync()
-    return wait_for_assets(backend, asset_paths, timeout=500)[0]
+    try:
+        yield wait_for_assets(backend, asset_paths)
+    finally:
+        for asset_path in asset_paths:
+            asset_path.unlink(missing_ok=True)
