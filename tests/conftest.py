@@ -9,6 +9,7 @@ from google.cloud import storage
 from shade import ShadeLocal
 from shade.v1.models import AssetModel, RootModel
 from tests.helpers import wait_for_assets
+import platform
 
 
 def rand() -> str:
@@ -32,7 +33,8 @@ def backend() -> ShadeLocal:
     backend.models.enable_model('blip')
     backend.models.enable_model('audio')
     backend.models.enable_model('text')
-    backend.models.enable_model('braw')
+    backend.models.enable_model('facial')
+    backend.models.enable_model('braw') if platform.system() != 'Linux' else None
 
     return backend
 

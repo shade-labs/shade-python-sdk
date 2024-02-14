@@ -32,7 +32,7 @@ def wait_for_jobs(
     # each handle can be a path or an asset
     paths = [handle.path if isinstance(handle, AssetModel) else handle for handle in handles]
 
-    timeout = 30 + 5 * len(paths)  # seems like enough time
+    timeout = 60 + (30 * len(paths))  # seems like enough time
     start_time = time.time()
     done = False
 

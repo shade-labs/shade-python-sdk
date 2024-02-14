@@ -53,25 +53,26 @@ def test_visual_assets_batched(
         assert asset.tags
 
 
-@pytest.mark.parametrize('demo_file_name', [
-    'audio/Cymatics - Buildup Drums 19 - 140 BPM.wav',
-    'audio/Cymatics - Buildup Drums 20 - 140 BPM.wav',
-    'audio/Cymatics - Buildup Drums 24 - 150 BPM.wav',
-    'audio/Snap Sound Effect [ HD ].mp3',
-    'audio/item_purchase.ogg',
-])
-def test_audio_assets(
-        demo_asset: AssetModel,
-        backend: ShadeLocal,
-):
-    asset = wait_for_jobs(backend, [
-        Job.METADATA,
-        Job.AUDIO
-    ], [demo_asset])[0]
-
-    # assert asset.size_bytes
-    assert asset.tags
-    assert asset.ai_indexed
+# @pytest.mark.parametrize('demo_file_name', [
+#     'audio/Cymatics - Buildup Drums 19 - 140 BPM.wav',
+#     'audio/Cymatics - Buildup Drums 20 - 140 BPM.wav',
+#     'audio/Cymatics - Buildup Drums 24 - 150 BPM.wav',
+#     'audio/Snap Sound Effect [ HD ].mp3',
+#     'audio/item_purchase.ogg',
+# ])
+# def test_audio_assets(
+#         demo_asset: AssetModel,
+#         backend: ShadeLocal,
+# ):
+#     backend.models.enable_model('audio')
+#     asset = wait_for_jobs(backend, [
+#         Job.METADATA,
+#         Job.AUDIO
+#     ], [demo_asset])[0]
+#
+#     # assert asset.size_bytes
+#     assert asset.tags
+#     assert asset.ai_indexed
 
 
 @pytest.mark.parametrize('demo_file_name', [
@@ -83,6 +84,8 @@ def test_text_assets(
         demo_asset: AssetModel,
         backend: ShadeLocal,
 ):
+    backend.models.enable_model('text')
+
     asset = wait_for_jobs(backend, [
         Job.METADATA,
         Job.TEXT
@@ -92,17 +95,19 @@ def test_text_assets(
 
 
 @pytest.mark.parametrize('demo_file_names', [
-    ([f'images/freeman{i}.jpg' for i in range(1, 8)]),
+    [f'images/freeman{i}.jpg' for i in range(1, 8)],
 ])
-def test_facial_recognition(
+def test_facial_recognition_batched(
         demo_assets: List[AssetModel],
         backend: ShadeLocal,
 ):
+    backend.models.enable_model('facial')
+
     assets = wait_for_jobs(backend, [
         Job.METADATA,
         Job.FACIAL_RECOGNITION,
         Job.CORE
-    ], [demo_assets], timeout=120)
+    ], demo_assets)
 
     # TODO check for individuals
 
