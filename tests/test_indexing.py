@@ -9,13 +9,14 @@ import pytest
 from shade import ShadeLocal
 from shade.v1.models import Job, AssetModel, JobState
 from tests.helpers import wait_for_jobs
+import platform
 
 
 @pytest.mark.parametrize('demo_file_names', [[
     'video/coverr-berlin-underground-train-7268-original.mp4',
     # TODO doesn't seem like braw is working
     'video/braw-r3d/A002_C305_0523UB_001.R3D',
-    'video/Filmplusgear-skiers-Samnaun-2019-dci-Q5.braw',
+    'video/Filmplusgear-skiers-Samnaun-2019-dci-Q5.braw' if platform.system() != 'Linux' else None,
     'image/exr-hdr-weird/bw_full.exr',
     'image/exr-hdr-weird/bw_half.exr',
     'image/exr-hdr-weird/rgb_full.exr',

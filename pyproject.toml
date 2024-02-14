@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shade-python-sdk"
-version = "0.2.25"
+version = "0.2.26"
 description = "Shade SDK"
 authors = ["Shade <shade@shade.inc>"]
 license = "MIT"

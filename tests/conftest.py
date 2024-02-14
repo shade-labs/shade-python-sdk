@@ -73,9 +73,11 @@ def demo_file_paths(pytestconfig, demo_file_names: List[str], tmp_path) -> List[
     :param demo_file_names: name of the asset.
     """
     cache_dir = pytestconfig.cache.mkdir("demo_assets")
-
     demo_file_paths = []
     for demo_file_name in demo_file_names:
+        if not demo_file_name:
+            continue
+
         asset_path = cache_dir / demo_file_name
         # TODO check for changes in the remote asset
         if not asset_path.exists():
