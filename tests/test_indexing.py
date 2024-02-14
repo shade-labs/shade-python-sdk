@@ -2,19 +2,21 @@
 This test suite assumes that a shade server is running on the same computer as the tests so that everything stays
 referenced
 """
-from pathlib import Path
+
+from typing import List
 
 import pytest
-from typing import List
+
 from shade import ShadeLocal
 from shade.v1.models import Job, AssetModel
 from tests.helpers import wait_for_jobs
 
+
 @pytest.mark.parametrize('demo_file_name', [
     'video/coverr-berlin-underground-train-7268-original.mp4',
     # TODO doesn't seem like braw is working
-    # 'video/braw-r3d/A002_C305_0523UB_001.R3D',
-    # 'video/In-The-Hand-Original.braw',
+    'video/braw-r3d/A002_C305_0523UB_001.R3D',
+    'video/Filmplusgear-skiers-Samnaun-2019-dci-Q5.braw',
     'image/exr-hdr-weird/bw_full.exr',
     'image/exr-hdr-weird/bw_half.exr',
     'image/exr-hdr-weird/rgb_full.exr',
@@ -44,7 +46,8 @@ def test_visual_assets(
         Job.METADATA, Job.CORE, Job.PREVIEWS, Job.COLOR_PALETTE
     ], [demo_asset])[0]
 
-    # assert asset.size_bytes
+    assert asset.signature
+    assert asset.ai_indexed
     assert asset.palette
     assert asset.preview_images
     assert asset.tags
@@ -68,6 +71,7 @@ def test_audio_assets(
 
     # assert asset.size_bytes
     assert asset.tags
+    assert asset.ai_indexed
 
 
 @pytest.mark.parametrize('demo_file_name', [
@@ -84,7 +88,7 @@ def test_text_assets(
         Job.TEXT
     ], [demo_asset])[0]
 
-    assert asset.size_bytes
+    assert asset.ai_indexed
 
 
 @pytest.mark.parametrize('demo_file_names', [

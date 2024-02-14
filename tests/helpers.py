@@ -6,6 +6,7 @@ from shade.v1.models import AssetModel, Job, JobState
 from shade.v1.api import APIException
 
 
+# Wooo these can all be fixtures
 def wait_for_assets(backend: ShadeLocal, paths: List[Path]) -> List[AssetModel]:
     """Wait for assets to be indexed"""
     start_time = time.time()
@@ -42,6 +43,10 @@ def wait_for_jobs(
             # if at least one job is not done, try again
             if any(getattr(asset, job) not in (JobState.COMPLETED, JobState.FAILED) for job in jobs):
                 done = False
+                break
+            elif getattr(asset, 'preview_job_state') == JobState.FAILED:
+                print(f"Previews failed so theres no point in waiting on {asset.path}")
+                done = True
                 break
 
             # no need to check the rest of the assets we found at least one unfinished job
