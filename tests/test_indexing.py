@@ -52,27 +52,26 @@ def test_visual_assets_batched(
         assert asset.preview_images
         assert asset.tags
 
+@pytest.mark.parametrize('demo_file_name', [
+    'audio/Cymatics - Buildup Drums 19 - 140 BPM.wav',
+    'audio/Cymatics - Buildup Drums 20 - 140 BPM.wav',
+    'audio/Cymatics - Buildup Drums 24 - 150 BPM.wav',
+    'audio/Snap Sound Effect [ HD ].mp3',
+    'audio/item_purchase.ogg',
+])
+def test_audio_assets(
+        demo_asset: AssetModel,
+        backend: ShadeLocal,
+):
+    backend.models.enable_model('audio')
+    asset = wait_for_jobs(backend, [
+        Job.METADATA,
+        Job.AUDIO
+    ], [demo_asset])[0]
 
-# @pytest.mark.parametrize('demo_file_name', [
-#     'audio/Cymatics - Buildup Drums 19 - 140 BPM.wav',
-#     'audio/Cymatics - Buildup Drums 20 - 140 BPM.wav',
-#     'audio/Cymatics - Buildup Drums 24 - 150 BPM.wav',
-#     'audio/Snap Sound Effect [ HD ].mp3',
-#     'audio/item_purchase.ogg',
-# ])
-# def test_audio_assets(
-#         demo_asset: AssetModel,
-#         backend: ShadeLocal,
-# ):
-#     backend.models.enable_model('audio')
-#     asset = wait_for_jobs(backend, [
-#         Job.METADATA,
-#         Job.AUDIO
-#     ], [demo_asset])[0]
-#
-#     # assert asset.size_bytes
-#     assert asset.tags
-#     assert asset.ai_indexed
+    # assert asset.size_bytes
+    assert asset.tags
+    assert asset.ai_indexed
 
 
 @pytest.mark.parametrize('demo_file_name', [
