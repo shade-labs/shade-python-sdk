@@ -36,7 +36,10 @@ import platform
     # exr's are failing on my machine -matias
     'image/exr-hdr-weird/farm_sunset_1k.hdr',
     'image/exr-hdr-weird/limpopo_golf_course_1k.hdr',
-    'image/exr-hdr-weird/sample_640426.hdr'
+    'image/exr-hdr-weird/sample_640426.hdr',
+    
+    'photoshop/model_157142297.psd',
+    'illustrator/example.ai'
 ]])
 def test_visual_assets_batched(
         demo_assets: List[AssetModel],
