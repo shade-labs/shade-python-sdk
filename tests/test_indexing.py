@@ -55,6 +55,7 @@ def test_visual_assets_batched(
         assert asset.preview_images
         assert asset.tags
 
+
 @pytest.mark.parametrize('demo_file_name', [
     'audio/Cymatics - Buildup Drums 19 - 140 BPM.wav',
     'audio/Cymatics - Buildup Drums 20 - 140 BPM.wav',

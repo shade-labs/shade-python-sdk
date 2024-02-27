@@ -45,7 +45,7 @@ class Search:
         if collection_ids is None:
             collection_ids = []
 
-        return [AssetModel(**asset, mount_info=self.__mount_info) for asset in self.__api.get('search', params={
+        return [AssetModel(**asset, mount_info=self.__mount_info) for asset in self.__api.post('search', params={
             'query': query,
             'collection_ids': collection_ids,
             'file_types': file_types,
