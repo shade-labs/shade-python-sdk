@@ -11,12 +11,12 @@ shade-python-sdk-tests = "tests.main:main"
 
 
 [tool.poetry.dependencies]
-python = "^3.8"
-pillow = "^10.0.0"
+python = "^3.10"
 dataclass-wizard = "^0.22.2"
 pytest = "^8.0.0"
 pydantic = "^2.4.2"
 requests = "^2.31.0"
+pillow = "^10.4.0"
 
 [build-system]
 requires = [
