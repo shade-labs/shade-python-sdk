@@ -1,6 +1,7 @@
-from pydantic import BaseModel
 from typing import Optional, List
 from uuid import UUID
+
+from pydantic import BaseModel
 
 
 class FilterQuery(BaseModel):
@@ -8,258 +9,253 @@ class FilterQuery(BaseModel):
     clause: str
     options: dict
 
-    # To a json
-    def to_json(self):
-        return {
-            'id': self.id,
-            'clause': self.clause
-        }
-
 
 class FilterBuilder:
-    filter_: FilterQuery = FilterQuery()
+    id: str
+    clause: str
+    options: dict
 
     @property
     def audio_loop(self) -> 'FilterBuilder':
-        self.filter_.id = 'audio_loop'
+        self.id = 'audio_loop'
         return self
 
     @property
     def bpm(self) -> 'FilterBuilder':
-        self.filter_.id = 'bpm'
+        self.id = 'bpm'
         return self
 
     @property
     def collection(self) -> 'FilterBuilder':
-        self.filter_.id = 'collection'
+        self.id = 'collection'
         return self
 
     @property
     def color(self) -> 'FilterBuilder':
-        self.filter_.id = 'color'
+        self.id = 'color'
         return self
 
     @property
     def date_created(self) -> 'FilterBuilder':
-        self.filter_.id = 'date_created'
+        self.id = 'date_created'
         return self
 
     @property
     def date_modified(self) -> 'FilterBuilder':
-        self.filter_.id = 'date_modified'
+        self.id = 'date_modified'
         return self
 
     @property
     def date_indexed(self) -> 'FilterBuilder':
-        self.filter_.id = 'date_indexed'
+        self.id = 'date_indexed'
         return self
 
     @property
     def file_category(self) -> 'FilterBuilder':
-        self.filter_.id = 'file_category'
+        self.id = 'file_category'
         return self
 
     @property
     def file_extension(self) -> 'FilterBuilder':
-        self.filter_.id = 'file_extension'
+        self.id = 'file_extension'
         return self
 
     @property
     def file_type(self) -> 'FilterBuilder':
-        self.filter_.id = 'file_type'
+        self.id = 'file_type'
         return self
 
     @property
     def path(self) -> 'FilterBuilder':
-        self.filter_.id = 'path'
+        self.id = 'path'
         return self
 
     @property
     def individual(self) -> 'FilterBuilder':
-        self.filter_.id = 'individual'
+        self.id = 'individual'
         return self
 
     @property
     def key(self) -> 'FilterBuilder':
-        self.filter_.id = 'key'
+        self.id = 'key'
         return self
 
     @property
     def photo_feature(self) -> 'FilterBuilder':
-        self.filter_.id = 'photo_feature'
+        self.id = 'photo_feature'
         return self
 
     @property
     def rating(self) -> 'FilterBuilder':
-        self.filter_.id = 'rating'
+        self.id = 'rating'
         return self
 
     @property
     def resolution(self) -> 'FilterBuilder':
-        self.filter_.id = 'resolution'
+        self.id = 'resolution'
         return self
 
     @property
     def tag(self) -> 'FilterBuilder':
-        self.filter_.id = 'tag'
+        self.id = 'tag'
         return self
 
     @property
     def ai_tag(self) -> 'FilterBuilder':
-        self.filter_.id = 'ai_tag'
+        self.id = 'ai_tag'
         return self
 
     @property
     def job_state(self) -> 'FilterBuilder':
-        self.filter_.id = 'job_state'
+        self.id = 'job_state'
         return self
 
     @property
     def name(self) -> 'FilterBuilder':
-        self.filter_.id = 'name'
+        self.id = 'name'
         return self
 
     @property
     def is_(self) -> 'FilterBuilder':
-        self.filter_.clause = 'is'
+        self.clause = 'is'
         return self
 
     @property
     def is_any_of(self) -> 'FilterBuilder':
-        self.filter_.clause = 'is any of'
+        self.clause = 'is any of'
         return self
 
     @property
     def is_not(self) -> 'FilterBuilder':
-        self.filter_.clause = 'is not'
+        self.clause = 'is not'
         return self
 
     @property
     def has(self) -> 'FilterBuilder':
-        self.filter_.clause = 'has'
+        self.clause = 'has'
         return self
 
     @property
     def has_not(self) -> 'FilterBuilder':
-        self.filter_.clause = 'has not'
+        self.clause = 'has not'
         return self
 
     @property
     def before(self) -> 'FilterBuilder':
-        self.filter_.clause = 'before'
+        self.clause = 'before'
         return self
 
     @property
     def after(self) -> 'FilterBuilder':
-        self.filter_.clause = 'after'
+        self.clause = 'after'
         return self
 
     @property
     def between(self) -> 'FilterBuilder':
-        self.filter_.clause = 'between'
+        self.clause = 'between'
         return self
 
     @property
     def in_(self) -> 'FilterBuilder':
-        self.filter_.clause = 'is directly in'
+        self.clause = 'is directly in'
         return self
 
     @property
     def under(self) -> 'FilterBuilder':
-        self.filter_.clause = 'is under'
+        self.clause = 'is under'
         return self
 
     @property
     def not_in(self) -> 'FilterBuilder':
-        self.filter_.clause = 'is not in'
+        self.clause = 'is not in'
         return self
 
     @property
     def less(self) -> 'FilterBuilder':
-        self.filter_.clause = 'less'
+        self.clause = 'less'
         return self
 
     @property
     def less_any_of(self) -> 'FilterBuilder':
-        self.filter_.clause = 'less than any of'
+        self.clause = 'less than any of'
         return self
 
     @property
     def less_equal(self) -> 'FilterBuilder':
-        self.filter_.clause = 'less/equal'
+        self.clause = 'less/equal'
         return self
 
     @property
     def less_equal_any_of(self) -> 'FilterBuilder':
-        self.filter_.clause = 'less/equal than any of'
+        self.clause = 'less/equal than any of'
         return self
 
     @property
     def greater(self) -> 'FilterBuilder':
-        self.filter_.clause = 'greater'
+        self.clause = 'greater'
         return self
 
     @property
     def greater_any_of(self) -> 'FilterBuilder':
-        self.filter_.clause = 'greater any of'
+        self.clause = 'greater any of'
         return self
 
     @property
     def greater_equal(self) -> 'FilterBuilder':
-        self.filter_.clause = 'greater/equal'
+        self.clause = 'greater/equal'
         return self
 
     @property
     def greater_equal_any_of(self) -> 'FilterBuilder':
-        self.filter_.clause = 'greater/equal any of'
+        self.clause = 'greater/equal any of'
         return self
 
     @property
     def not_started(self) -> 'FilterBuilder':
-        self.filter_.clause = "hasn't started"
+        self.clause = "hasn't started"
         return self
 
     @property
     def in_progress(self) -> 'FilterBuilder':
-        self.filter_.clause = 'in progress of'
+        self.clause = 'in progress of'
         return self
 
     @property
     def completed(self) -> 'FilterBuilder':
-        self.filter_.clause = 'completed'
+        self.clause = 'completed'
         return self
 
     @property
     def failed(self) -> 'FilterBuilder':
-        self.filter_.clause = 'failed'
+        self.clause = 'failed'
         return self
 
     @property
     def includes(self) -> 'FilterBuilder':
-        self.filter_.clause = 'includes'
+        self.clause = 'includes'
         return self
 
     @property
     def not_includes(self) -> 'FilterBuilder':
-        self.filter_.clause = 'does not include'
+        self.clause = 'does not include'
         return self
 
     @property
     def starts_with(self) -> 'FilterBuilder':
-        self.filter_.clause = 'starts with'
+        self.clause = 'starts with'
         return self
 
     @property
     def ends_with(self) -> 'FilterBuilder':
-        self.filter_.clause = 'end with'
+        self.clause = 'end with'
         return self
 
     def set_options(self, options: dict | list) -> 'FilterBuilder':
-        self.filter_.options = options
+        self.options = options
         return self
 
     def finish(self) -> FilterQuery:
-        return self.filter_
+        return FilterQuery(id=self.id, clause=self.clause, options=self.options)
 
 
 class ComposableQuery(BaseModel):
