@@ -1,9 +1,11 @@
-from .abc_resource import ABCResource
-from ..query_builder import ComposableQuery, FilterQuery
-from uuid import UUID
-import requests
-from typing import List
 from pathlib import Path
+from typing import List
+from uuid import UUID
+
+import requests
+
+from .abc_resource import ABCResource
+from ..query_builder import ComposableQuery
 
 
 class Asset(ABCResource):
