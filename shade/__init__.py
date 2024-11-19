@@ -1,1 +1,1 @@
-from shade.v1.shade_instance import ShadeLocal, ShadeRemote  # noqa: F401
+from shade.v1.shade_instance import ShadeLocal,    ShadeRemote  # noqa: F401
