@@ -14,17 +14,13 @@ class Indexing:
         self.__mount_info = mount_info
 
     def resync(self):
-        self.__api.post('indexing/sync')
+        self.__api.post("indexing/sync")
 
     def pause(self):
-        self.__api.post('indexing/pause', json={
-            'pause': True
-        })
+        self.__api.post("indexing/pause", json={"pause": True})
 
     def resume(self):
-        self.__api.post('indexing/pause', json={
-            'pause': False
-        })
+        self.__api.post("indexing/pause", json={"pause": False})
 
     def status(self) -> dict:
         """
@@ -33,7 +29,7 @@ class Indexing:
         TODO make this a pydantic model
         :return: The indexing status
         """
-        return self.__api.get('indexing/status').json()
+        return self.__api.get("indexing/status").json()
 
     def get_queue(self) -> list:
         """
@@ -42,7 +38,7 @@ class Indexing:
         TODO make this a pydantic model
         :return: The queue
         """
-        return self.__api.get('indexing/queue').json()
+        return self.__api.get("indexing/queue").json()
 
     def reset_indexing(self):
         """
@@ -52,12 +48,13 @@ class Indexing:
         Warning this is a destructive action
         :return:
         """
-        self.__api.post('indexing/reset')
+        self.__api.post("indexing/reset")
 
     def queue_single_file(self, path: Path) -> uuid.UUID:
-        response = self.__api.post('indexing/file', json={
-            'path': str(self.__mount_info.translate_filepath_to_server(path))
-        })
+        response = self.__api.post(
+            "indexing/file",
+            json={"path": str(self.__mount_info.translate_filepath_to_server(path))},
+        )
 
         return uuid.UUID(response.json())
 
@@ -67,10 +64,10 @@ class Indexing:
         """
         while True:
             status = self.status()
-            if status['state'] == 'IDLE':
+            if status["state"] == "IDLE":
                 break
-            print(f"Waiting for indexing to finish, {status['state']}. "
-                  f"Progress: {status['progress']}/{status['total']}")
+            print(
+                f"Waiting for indexing to finish, {status['state']}. "
+                f"Progress: {status['progress']}/{status['total']}"
+            )
             time.sleep(1)
-
-

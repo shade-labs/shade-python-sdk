@@ -1,77 +1,75 @@
 import enum
 import uuid
 from datetime import datetime
-from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
+from typing import Any, Optional
 
 from dataclass_wizard import asdict
-from pydantic import BaseModel
-from pydantic import validator
+from pydantic import BaseModel, validator
 
 
 class Job(str, enum.Enum):
-    PREVIEWS = 'preview_job_state'
-    METADATA = 'metadata_job_state'
-    CORE = 'core_vision_job_state'
-    COLOR_PALETTE = 'color_palette_job_state'
-    AUDIO = 'audio_job_state'
-    TEXT = 'text_job_state'
-    FACIAL_RECOGNITION = 'facial_recognition_job_state'
+    PREVIEWS = "preview_job_state"
+    METADATA = "metadata_job_state"
+    CORE = "core_vision_job_state"
+    COLOR_PALETTE = "color_palette_job_state"
+    AUDIO = "audio_job_state"
+    TEXT = "text_job_state"
+    FACIAL_RECOGNITION = "facial_recognition_job_state"
+
 
 class JobState(str, enum.Enum):
-    NOT_STARTED = 'NOT_STARTED'
-    IN_PROGRESS = 'IN_PROGRESS'
-    COMPLETED = 'COMPLETED'
-    FAILED = 'FAILED'
+    NOT_STARTED = "NOT_STARTED"
+    IN_PROGRESS = "IN_PROGRESS"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
 
 
 class License(str, enum.Enum):
     """Asset Licenses"""
-    CC_BY = 'cc-by'
-    CC_BY_SA = 'cc-by-sa'
-    CC_BY_ND = 'cc-by-nd'
-    CC_BY_NC = 'cc-by-nc'
-    CC_BY_NC_SA = 'cc-by-nc-sa'
-    CC_BY_NC_ND = 'cc-by-nc-nd'
-    CC0 = 'cc0'
-    UNKNOWN = 'unknown'
-    OTHER = 'other'
+
+    CC_BY = "cc-by"
+    CC_BY_SA = "cc-by-sa"
+    CC_BY_ND = "cc-by-nd"
+    CC_BY_NC = "cc-by-nc"
+    CC_BY_NC_SA = "cc-by-nc-sa"
+    CC_BY_NC_ND = "cc-by-nc-nd"
+    CC0 = "cc0"
+    UNKNOWN = "unknown"
+    OTHER = "other"
 
 
 class AssetType(str, enum.Enum):
-    IMAGE = 'IMAGE'
-    VIDEO = 'VIDEO'
-    AUDIO = 'AUDIO'
-    OBJECT = 'OBJECT'
-    MAYA = 'MAYA'
-    NUKE = 'NUKE'
-    MAX = 'MAX'
-    HDR = 'HDR'
-    HDRI = 'HDRI'
-    BLENDER = 'BLENDER'
-    HOUDINI = 'HOUDINI'
-    PHOTOSHOP = 'PHOTOSHOP'
-    UNREAL = 'UNREAL'
-    UNITY = 'UNITY'
-    TEXTURE = 'TEXTURE'
+    IMAGE = "IMAGE"
+    VIDEO = "VIDEO"
+    AUDIO = "AUDIO"
+    OBJECT = "OBJECT"
+    MAYA = "MAYA"
+    NUKE = "NUKE"
+    MAX = "MAX"
+    HDR = "HDR"
+    HDRI = "HDRI"
+    BLENDER = "BLENDER"
+    HOUDINI = "HOUDINI"
+    PHOTOSHOP = "PHOTOSHOP"
+    UNREAL = "UNREAL"
+    UNITY = "UNITY"
+    TEXTURE = "TEXTURE"
     SEQUENCE = "SEQUENCE"
-    AFTER_EFFECTS = 'AFTER_EFFECTS'
-    MOGRT = 'MOGRT'
-    ILLUSTRATOR = 'ILLUSTRATOR'
-    EXR = 'EXR'
-    DOCUMENT = 'DOCUMENT'
+    AFTER_EFFECTS = "AFTER_EFFECTS"
+    MOGRT = "MOGRT"
+    ILLUSTRATOR = "ILLUSTRATOR"
+    EXR = "EXR"
+    DOCUMENT = "DOCUMENT"
     # frontend stock assets are sometimes saved as such?
     # TODO investigate this, added to fix:
     #  https://discord.com/channels/984951878192353321/1096557388095570031/1126296508560584775
-    STOCK = 'STOCK'
-    OTHER = 'OTHER'
+    STOCK = "STOCK"
+    OTHER = "OTHER"
 
 
 class CollectionType(str, enum.Enum):
-    AUTO = 'auto'
-    USER = 'user'
+    AUTO = "auto"
+    USER = "user"
 
 
 class IndexingQueueItem(BaseModel):
@@ -80,9 +78,9 @@ class IndexingQueueItem(BaseModel):
 
 
 class IndexingStatus(str, enum.Enum):
-    IDLE = 'IDLE'
-    INDEXING = 'INDEXING'
-    DOWNLOADING = 'DOWNLOADING'
+    IDLE = "IDLE"
+    INDEXING = "INDEXING"
+    DOWNLOADING = "DOWNLOADING"
 
 
 class StatusResponse(BaseModel):
@@ -117,8 +115,8 @@ def dataclass_to_dict(v: Any):
         return v
     try:
         return asdict(v)
-    except TypeError:
-        raise ValueError(f"Invalid type for field: {type(v)}")
+    except TypeError as e:
+        raise ValueError(f"Invalid type for field: {type(v)}") from e
 
 
 class CommentModel(BaseModel):
@@ -131,8 +129,9 @@ class CommentModel(BaseModel):
 
 class AssetComments(BaseModel):
     """Comments for an asset"""
+
     asset_id: uuid.UUID
-    comments: List[CommentModel]
+    comments: list[CommentModel]
 
 
 class PreviewModel(BaseModel):
@@ -159,28 +158,32 @@ class AssetModel(BaseModel):
 
     path: str
     type: AssetType
-    tags: List[str]
+    tags: list[str]
 
     size_bytes: int
 
-    source: List[str]
+    source: list[str]
 
-    objects: List[object]
+    objects: list[object]
     transcription: Optional[str]
     rating: Optional[float]
-    palette: List[List[int]]
+    palette: list[list[int]]
     ocr: Optional[str]
     category: Optional[str]
     extension: str
     license: License
     asset_metadata: dict
-    preview_images: List[PreviewModel]
+    preview_images: list[PreviewModel]
 
     texture_data: Optional[dict]
-    _texture_data_validator = validator('texture_data', pre=True, allow_reuse=True)(dataclass_to_dict)
+    _texture_data_validator = validator("texture_data", pre=True, allow_reuse=True)(
+        dataclass_to_dict
+    )
 
     integration_data: Optional[dict]
-    _integration_data_validator = validator('integration_data', pre=True, allow_reuse=True)(dataclass_to_dict)
+    _integration_data_validator = validator(
+        "integration_data", pre=True, allow_reuse=True
+    )(dataclass_to_dict)
 
     proxy_path: Optional[str]
     ai_indexed: bool
@@ -193,7 +196,7 @@ class AssetModel(BaseModel):
     text_job_state: str
     facial_recognition_job_state: str
 
-    comments: List[CommentModel]
+    comments: list[CommentModel]
 
 
 class CollectionModel(BaseModel):
@@ -201,8 +204,8 @@ class CollectionModel(BaseModel):
     name: str
     description: str
     type: CollectionType
-    tags: List[str]
-    filters: Dict[str, List[str]]
+    tags: list[str]
+    filters: dict[str, list[str]]
     preview_asset: Optional[AssetModel]
 
     # TODO: use computed_field for pydantic v2
@@ -210,6 +213,6 @@ class CollectionModel(BaseModel):
 
 
 class CollectionModelWithAssets(CollectionModel):
-    assets: List[AssetModel]
-    manually_added_assets: List[AssetModel]
-    autogenerated_assets: List[AssetModel] = []
+    assets: list[AssetModel]
+    manually_added_assets: list[AssetModel]
+    autogenerated_assets: list[AssetModel] = []

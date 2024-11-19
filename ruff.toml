@@ -1,0 +1,50 @@
+
+# Assume Python 3.12
+target-version = "py312"
+
+[lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+select = [
+    "E4", # Ruff default
+    "E7", # Ruff default
+    "E9", # Ruff default
+    "F", # Ruff default
+#    "B", # check w brandon (var binding stuff) & emerson bad cache stuff
+    "C",
+    "B9",
+#   "D", Documentation, this will generate an ungodly amount of changes and most docstrings can probably be written w Copilot
+    "E",
+    "I",
+#    "N", # Naming, this one is wildly time-consuming, easy to do tho
+#    "S", # Security The amount of issues we have with this is wild
+#   "DAR", # Ruff has no idea of what to do with this
+#   "RST", # Ruff has no idea of what to do with this
+    "UP",    # pyupgrade
+    "C401",  # flake8-comprehensions: unnecessary-generator-set
+    "C402",  # flake8-comprehensions: unnecessary-generator-dict
+    "C403",  # flake8-comprehensions: unnecessary-list-comprehension-set
+    "C404",  # flake8-comprehensions: unnecessary-list-comprehension-dict
+    "C405",  # flake8-comprehensions: unnecessary-literal-set
+    "F632",  # pyflakes: is-literal
+    "W605",  # pycodestyle: invalid-escape-sequence
+]
+
+ignore = [
+    "E712", # Comparison to `None` should be `cond is None` -> bc this breaks sqlalchemy
+    "E711", # [*] Comparison to `None` should be `cond is None` -> bc this breaks sqlalchemy
+    "E402", # Module level import not at top of file -> Looks like shade main needs it for black magic stuff
+    "C901", # function is too complex -> bc shade LOVES complexitu
+    "S113", # Probable use of requests call without timeout -> talk to emerson about this one
+    "S607", # Starting a process with a partial executable path -> talk to emerson about this one
+    "S603", #  `subprocess` call: check for execution of untrusted input -> talk to emerson about this one
+    "B008",  # B008 Do not perform function call `TaskiqDepends` in argument defaults; -> talk to matias
+    "E501", # Line too long is WILD to fix, do it when we make it equel to SEx
+#   "RST201", # Ruff has no idea of what to do with this
+#   "RST203", # Ruff has no idea of what to do with this
+#   "RST301", # Ruff has no idea of what to do with this
+    "UP007", # Use | instead of Union[ , ] in arg lists -> i really have no idea why but if we run this everything breaks
+
+]
+
+
+

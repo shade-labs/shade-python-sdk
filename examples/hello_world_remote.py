@@ -15,14 +15,10 @@ LOCAL_MOUNT_POINT = Path("/")
 # Where the mount point exists on my remote server
 REMOTE_MOUNT_POINT = Path("/")
 # The IP of my remote server
-SERVER_IP = 'http://0.0.0.0'
+SERVER_IP = "http://0.0.0.0"
 
-if __name__ == '__main__':
-    server = ShadeRemote(
-        LOCAL_MOUNT_POINT,
-        REMOTE_MOUNT_POINT,
-        SERVER_IP
-    )
+if __name__ == "__main__":
+    server = ShadeRemote(LOCAL_MOUNT_POINT, REMOTE_MOUNT_POINT, SERVER_IP)
 
     # Get the current roots
     print(server.roots.get_roots())

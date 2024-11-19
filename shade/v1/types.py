@@ -1,6 +1,4 @@
-import os
 from pathlib import Path
-from typing import Dict
 
 from pydantic import BaseModel, model_validator
 
@@ -68,20 +66,22 @@ class ServerResponse(BaseModel):
 
     mount_info: MountInfo
 
-    @model_validator(mode='before')
+    @model_validator(mode="before")
     @classmethod
-    def translate_file_path(cls, data: Dict):
+    def translate_file_path(cls, data: dict):
         """
         If on_remote is True, then local_mount_location and server_mount_location must be set.
         """
-        if 'path' in data:
-            data['local_path'] = data['mount_info'].translate_filepath_to_local(Path(data['path']))
+        if "path" in data:
+            data["local_path"] = data["mount_info"].translate_filepath_to_local(
+                Path(data["path"])
+            )
 
-            data['remote_path'] = Path(data['path'])
+            data["remote_path"] = Path(data["path"])
 
-            del data['path']
+            del data["path"]
 
-            data['mount_info'] = data['mount_info']
+            data["mount_info"] = data["mount_info"]
 
         return data
 
@@ -90,11 +90,13 @@ class LocalToRemote(BaseModel):
     pass
 
 
-
 if __name__ == "__main__":
     data_ = {
         "path": "/home/user/blendfile.blend",
-        "mount_info": MountInfo(local_mount_location=Path('/Volumes/studio'), server_mount_location=Path('/home/user'))
+        "mount_info": MountInfo(
+            local_mount_location=Path("/Volumes/studio"),
+            server_mount_location=Path("/home/user"),
+        ),
     }
     response = ServerResponse(**data_)
     print(response.local_path)  # Should print: /mnt/remote/blendfile.blend

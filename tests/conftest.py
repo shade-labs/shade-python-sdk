@@ -1,19 +1,19 @@
 import os
+import platform
 import random
+import string
 from pathlib import Path
-from typing import List
 
 import pytest
-import string
 from google.cloud import storage
+
 from shade import ShadeLocal
 from shade.v1.models import AssetModel, RootModel
 from tests.helpers import wait_for_assets
-import platform
 
 
 def rand() -> str:
-    return ''.join(random.choices(string.ascii_lowercase, k=4))
+    return "".join(random.choices(string.ascii_lowercase, k=4))
 
 
 def mangle(name: str) -> str:
@@ -21,20 +21,20 @@ def mangle(name: str) -> str:
         path = Path(name)
     except Exception:
         return name
-    return f'{path.stem}-{rand()}{path.suffix}'
+    return f"{path.stem}-{rand()}{path.suffix}"
 
 
 @pytest.fixture(scope="session")
 def backend() -> ShadeLocal:
-    backend = ShadeLocal(port=int(os.getenv('SHADE_PORT', 9082)))
-    assert backend.server.status() == 'online'
+    backend = ShadeLocal(port=int(os.getenv("SHADE_PORT", 9082)))
+    assert backend.server.status() == "online"
 
     # backend.models.enable_all_models()
-    backend.models.enable_model('blip')
-    backend.models.enable_model('audio')
-    backend.models.enable_model('text')
-    backend.models.enable_model('facial')
-    backend.models.enable_model('braw') if platform.system() != 'Linux' else None
+    backend.models.enable_model("blip")
+    backend.models.enable_model("audio")
+    backend.models.enable_model("text")
+    backend.models.enable_model("facial")
+    backend.models.enable_model("braw") if platform.system() != "Linux" else None
 
     return backend
 
@@ -68,7 +68,7 @@ def demo_file_path(pytestconfig, demo_file_name: str, tmp_path) -> Path:
 
 
 @pytest.fixture
-def demo_file_paths(pytestconfig, demo_file_names: List[str], tmp_path) -> List[Path]:
+def demo_file_paths(pytestconfig, demo_file_names: list[str], tmp_path) -> list[Path]:
     """
     Fixture to request a bunch of paths for a test.
 
@@ -93,7 +93,7 @@ def demo_file_paths(pytestconfig, demo_file_names: List[str], tmp_path) -> List[
             blob.download_to_filename(str(asset_path))
 
         # copy it somewhere safe, in case the test modifies it
-        tmp_asset_path = tmp_path / 'demo_assets' / demo_file_name
+        tmp_asset_path = tmp_path / "demo_assets" / demo_file_name
         tmp_asset_path.parent.mkdir(parents=True, exist_ok=True)
         tmp_asset_path.write_bytes(asset_path.read_bytes())
 
@@ -105,9 +105,9 @@ def demo_file_paths(pytestconfig, demo_file_names: List[str], tmp_path) -> List[
         tmp_asset_path.unlink(missing_ok=True)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def demo_asset_root(backend: ShadeLocal, tmpdir_factory) -> RootModel:
-    root_path = Path(tmpdir_factory.mktemp('asset_root'))
+    root_path = Path(tmpdir_factory.mktemp("asset_root"))
     root_path.mkdir(parents=True, exist_ok=True)
     root_id = backend.roots.add_new_root(root_path)
 
@@ -123,7 +123,9 @@ def demo_asset_root(backend: ShadeLocal, tmpdir_factory) -> RootModel:
 
 
 @pytest.fixture
-def demo_asset(backend: ShadeLocal, demo_file_path: Path, demo_asset_root: RootModel) -> AssetModel:
+def demo_asset(
+    backend: ShadeLocal, demo_file_path: Path, demo_asset_root: RootModel
+) -> AssetModel:
     asset_path = Path(demo_asset_root.local_path) / mangle(demo_file_path.name)
     demo_file_path.rename(asset_path)
 
@@ -135,13 +137,14 @@ def demo_asset(backend: ShadeLocal, demo_file_path: Path, demo_asset_root: RootM
 
 
 @pytest.fixture
-def demo_assets(backend: ShadeLocal, demo_file_paths: Path, demo_asset_root: Path) -> AssetModel:
+def demo_assets(
+    backend: ShadeLocal, demo_file_paths: Path, demo_asset_root: Path
+) -> AssetModel:
     root_path = Path(demo_asset_root.local_path)
     asset_paths = [
-        root_path / mangle(demo_file_path.name)
-        for demo_file_path in demo_file_paths
+        root_path / mangle(demo_file_path.name) for demo_file_path in demo_file_paths
     ]
-    for demo_file_path, asset_path in zip(demo_file_paths, asset_paths):
+    for demo_file_path, asset_path in zip(demo_file_paths, asset_paths, strict=False):
         demo_file_path.rename(asset_path)
 
     backend.indexing.resync()
