@@ -43,7 +43,6 @@ ignore = [
 #   "RST203", # Ruff has no idea of what to do with this
 #   "RST301", # Ruff has no idea of what to do with this
     "UP007", # Use | instead of Union[ , ] in arg lists -> i really have no idea why but if we run this everything breaks
-
 ]
 
 
