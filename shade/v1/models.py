@@ -8,68 +8,68 @@ from pydantic import BaseModel, validator
 
 
 class Job(str, enum.Enum):
-    PREVIEWS = "preview_job_state"
-    METADATA = "metadata_job_state"
-    CORE = "core_vision_job_state"
-    COLOR_PALETTE = "color_palette_job_state"
-    AUDIO = "audio_job_state"
-    TEXT = "text_job_state"
-    FACIAL_RECOGNITION = "facial_recognition_job_state"
+    PREVIEWS = 'preview_job_state'
+    METADATA = 'metadata_job_state'
+    CORE = 'core_vision_job_state'
+    COLOR_PALETTE = 'color_palette_job_state'
+    AUDIO = 'audio_job_state'
+    TEXT = 'text_job_state'
+    FACIAL_RECOGNITION = 'facial_recognition_job_state'
 
 
 class JobState(str, enum.Enum):
-    NOT_STARTED = "NOT_STARTED"
-    IN_PROGRESS = "IN_PROGRESS"
-    COMPLETED = "COMPLETED"
-    FAILED = "FAILED"
+    NOT_STARTED = 'NOT_STARTED'
+    IN_PROGRESS = 'IN_PROGRESS'
+    COMPLETED = 'COMPLETED'
+    FAILED = 'FAILED'
 
 
 class License(str, enum.Enum):
     """Asset Licenses"""
 
-    CC_BY = "cc-by"
-    CC_BY_SA = "cc-by-sa"
-    CC_BY_ND = "cc-by-nd"
-    CC_BY_NC = "cc-by-nc"
-    CC_BY_NC_SA = "cc-by-nc-sa"
-    CC_BY_NC_ND = "cc-by-nc-nd"
-    CC0 = "cc0"
-    UNKNOWN = "unknown"
-    OTHER = "other"
+    CC_BY = 'cc-by'
+    CC_BY_SA = 'cc-by-sa'
+    CC_BY_ND = 'cc-by-nd'
+    CC_BY_NC = 'cc-by-nc'
+    CC_BY_NC_SA = 'cc-by-nc-sa'
+    CC_BY_NC_ND = 'cc-by-nc-nd'
+    CC0 = 'cc0'
+    UNKNOWN = 'unknown'
+    OTHER = 'other'
 
 
 class AssetType(str, enum.Enum):
-    IMAGE = "IMAGE"
-    VIDEO = "VIDEO"
-    AUDIO = "AUDIO"
-    OBJECT = "OBJECT"
-    MAYA = "MAYA"
-    NUKE = "NUKE"
-    MAX = "MAX"
-    HDR = "HDR"
-    HDRI = "HDRI"
-    BLENDER = "BLENDER"
-    HOUDINI = "HOUDINI"
-    PHOTOSHOP = "PHOTOSHOP"
-    UNREAL = "UNREAL"
-    UNITY = "UNITY"
-    TEXTURE = "TEXTURE"
-    SEQUENCE = "SEQUENCE"
-    AFTER_EFFECTS = "AFTER_EFFECTS"
-    MOGRT = "MOGRT"
-    ILLUSTRATOR = "ILLUSTRATOR"
-    EXR = "EXR"
-    DOCUMENT = "DOCUMENT"
+    IMAGE = 'IMAGE'
+    VIDEO = 'VIDEO'
+    AUDIO = 'AUDIO'
+    OBJECT = 'OBJECT'
+    MAYA = 'MAYA'
+    NUKE = 'NUKE'
+    MAX = 'MAX'
+    HDR = 'HDR'
+    HDRI = 'HDRI'
+    BLENDER = 'BLENDER'
+    HOUDINI = 'HOUDINI'
+    PHOTOSHOP = 'PHOTOSHOP'
+    UNREAL = 'UNREAL'
+    UNITY = 'UNITY'
+    TEXTURE = 'TEXTURE'
+    SEQUENCE = 'SEQUENCE'
+    AFTER_EFFECTS = 'AFTER_EFFECTS'
+    MOGRT = 'MOGRT'
+    ILLUSTRATOR = 'ILLUSTRATOR'
+    EXR = 'EXR'
+    DOCUMENT = 'DOCUMENT'
     # frontend stock assets are sometimes saved as such?
     # TODO investigate this, added to fix:
     #  https://discord.com/channels/984951878192353321/1096557388095570031/1126296508560584775
-    STOCK = "STOCK"
-    OTHER = "OTHER"
+    STOCK = 'STOCK'
+    OTHER = 'OTHER'
 
 
 class CollectionType(str, enum.Enum):
-    AUTO = "auto"
-    USER = "user"
+    AUTO = 'auto'
+    USER = 'user'
 
 
 class IndexingQueueItem(BaseModel):
@@ -78,9 +78,9 @@ class IndexingQueueItem(BaseModel):
 
 
 class IndexingStatus(str, enum.Enum):
-    IDLE = "IDLE"
-    INDEXING = "INDEXING"
-    DOWNLOADING = "DOWNLOADING"
+    IDLE = 'IDLE'
+    INDEXING = 'INDEXING'
+    DOWNLOADING = 'DOWNLOADING'
 
 
 class StatusResponse(BaseModel):
@@ -116,7 +116,7 @@ def dataclass_to_dict(v: Any):
     try:
         return asdict(v)
     except TypeError as e:
-        raise ValueError(f"Invalid type for field: {type(v)}") from e
+        raise ValueError(f'Invalid type for field: {type(v)}') from e
 
 
 class CommentModel(BaseModel):
@@ -176,13 +176,13 @@ class AssetModel(BaseModel):
     preview_images: list[PreviewModel]
 
     texture_data: Optional[dict]
-    _texture_data_validator = validator("texture_data", pre=True, allow_reuse=True)(
+    _texture_data_validator = validator('texture_data', pre=True, allow_reuse=True)(
         dataclass_to_dict
     )
 
     integration_data: Optional[dict]
     _integration_data_validator = validator(
-        "integration_data", pre=True, allow_reuse=True
+        'integration_data', pre=True, allow_reuse=True
     )(dataclass_to_dict)
 
     proxy_path: Optional[str]

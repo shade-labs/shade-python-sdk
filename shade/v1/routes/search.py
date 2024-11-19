@@ -49,22 +49,22 @@ class Search:
         return [
             AssetModel(**asset, mount_info=self.__mount_info)
             for asset in self.__api.post(
-                "search",
+                'search',
                 params={
-                    "query": query,
-                    "collection_ids": collection_ids,
-                    "file_types": file_types,
-                    "file_extensions": file_extensions,
-                    "tags": tags,
-                    "limit": limit,
-                    "page": page,
-                    "folder": folder,
-                    "recursive": recursive,
-                    "filter_ai": filter_ai,
-                    "categories": categories,
-                    "date_added": date_added,
-                    "sort": sort,
-                    "exclude_file_types": exclude_file_types,
+                    'query': query,
+                    'collection_ids': collection_ids,
+                    'file_types': file_types,
+                    'file_extensions': file_extensions,
+                    'tags': tags,
+                    'limit': limit,
+                    'page': page,
+                    'folder': folder,
+                    'recursive': recursive,
+                    'filter_ai': filter_ai,
+                    'categories': categories,
+                    'date_added': date_added,
+                    'sort': sort,
+                    'exclude_file_types': exclude_file_types,
                 },
             ).json()
         ]
@@ -72,7 +72,7 @@ class Search:
     def similar(self, asset_id: uuid.UUID):
         return [
             AssetModel(**asset, mount_info=self.__mount_info)
-            for asset in self.__api.get(f"assets/{asset_id}/similar").json()
+            for asset in self.__api.get(f'assets/{asset_id}/similar').json()
         ]
 
     def list_assets_in_folder(self, path: Path, recursive=False) -> list[AssetModel]:

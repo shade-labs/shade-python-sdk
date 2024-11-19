@@ -12,7 +12,7 @@ class Collections:
         self.__mount_info = mount_info
 
     def get_collections(self):
-        return self.__api.get("collections").json()
+        return self.__api.get('collections').json()
 
     def get_collection_by_id(self, collection_id: uuid.UUID):
-        return self.__api.get(f"collections/{collection_id}")
+        return self.__api.get(f'collections/{collection_id}')

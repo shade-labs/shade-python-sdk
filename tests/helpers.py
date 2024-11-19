@@ -19,7 +19,7 @@ def wait_for_assets(backend: ShadeLocal, paths: list[Path]) -> list[AssetModel]:
             if e.status_code != 404:
                 raise e
         time.sleep(1)
-    raise Exception(f"Timed out waiting for assets to index: {paths}")
+    raise Exception(f'Timed out waiting for assets to index: {paths}')
 
 
 def wait_for_jobs(
@@ -47,12 +47,12 @@ def wait_for_jobs(
                 getattr(asset, job) not in (JobState.COMPLETED, JobState.FAILED)
                 for job in jobs
             ):
-                print(f"Waiting for {asset.path} to finish indexing")
+                print(f'Waiting for {asset.path} to finish indexing')
                 done = False
                 break
 
             if asset.preview_job_state == JobState.FAILED:
-                print(f"Previews failed so theres no point in waiting on {asset.path}")
+                print(f'Previews failed so theres no point in waiting on {asset.path}')
                 done = True
                 break
 
@@ -66,7 +66,7 @@ def wait_for_jobs(
 
     if not done:
         raise Exception(
-            f"Timed out waiting for jobs to complete: {jobs} on assets: {paths}"
+            f'Timed out waiting for jobs to complete: {jobs} on assets: {paths}'
         )
 
     return assets

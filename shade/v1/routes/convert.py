@@ -24,11 +24,11 @@ class Convert:
         """
         result = BytesIO(
             self.__api.post(
-                "convert/colorspace",
+                'convert/colorspace',
                 json={
-                    "file": str(self.__mount_info.translate_filepath_to_server(path)),
-                    "in_colorspace": in_colorspace,
-                    "out_colorspace": out_colorspace,
+                    'file': str(self.__mount_info.translate_filepath_to_server(path)),
+                    'in_colorspace': in_colorspace,
+                    'out_colorspace': out_colorspace,
                 },
             ).content
         )

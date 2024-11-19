@@ -47,4 +47,5 @@ ignore = [
 ]
 
 
-
+[format]
+quote-style = "single"

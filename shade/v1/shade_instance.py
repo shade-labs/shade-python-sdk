@@ -32,7 +32,7 @@ class __Shade:
         self.ip = ip
         self.port = port
 
-        self.__api = API(f"{self.ip}:{self.port}")
+        self.__api = API(f'{self.ip}:{self.port}')
         self.roots = Roots(self.__api, self.mount_info)
         self.previews = Previews(self.__api, self.mount_info)
         self.indexing = Indexing(self.__api, self.mount_info)
@@ -49,8 +49,8 @@ class ShadeLocal(__Shade):
     A local instance to connect to. This will do no filepath translation.
     """
 
-    def __init__(self, ip: str = "http://localhost", port: int = 9082):
-        super().__init__(Path("/"), Path("/"), ip, port)
+    def __init__(self, ip: str = 'http://localhost', port: int = 9082):
+        super().__init__(Path('/'), Path('/'), ip, port)
 
 
 class ShadeRemote(__Shade):

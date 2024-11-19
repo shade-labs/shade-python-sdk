@@ -11,13 +11,13 @@ from shade import ShadeRemote
 
 
 # Where the mount point exists on my computer
-LOCAL_MOUNT_POINT = Path("/")
+LOCAL_MOUNT_POINT = Path('/')
 # Where the mount point exists on my remote server
-REMOTE_MOUNT_POINT = Path("/")
+REMOTE_MOUNT_POINT = Path('/')
 # The IP of my remote server
-SERVER_IP = "http://0.0.0.0"
+SERVER_IP = 'http://0.0.0.0'
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     server = ShadeRemote(LOCAL_MOUNT_POINT, REMOTE_MOUNT_POINT, SERVER_IP)
 
     # Get the current roots
@@ -28,11 +28,11 @@ if __name__ == "__main__":
 
     # Example preview request
     try:
-        server.previews.request_preview(Path("/Users/test/example.jpg"))
+        server.previews.request_preview(Path('/Users/test/example.jpg'))
     except Exception:
         pass
 
-    print("Getting all assets, this could take awhile")
+    print('Getting all assets, this could take awhile')
     assets = server.assets.get_all_assets()
 
     for asset in assets:

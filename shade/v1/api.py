@@ -10,7 +10,7 @@ class APIException(Exception):
     error: str
 
     def __str__(self):
-        return f"Exception with Shade: {self.status_code} - {self.error}"
+        return f'Exception with Shade: {self.status_code} - {self.error}'
 
 
 def handle_server_errors(func: callable) -> callable:
@@ -36,16 +36,16 @@ class API:
 
     @handle_server_errors
     def get(self, route: str, params: dict = None) -> Any:
-        return requests.get(self.__ip + "/" + route, params=params)
+        return requests.get(self.__ip + '/' + route, params=params)
 
     @handle_server_errors
     def put(self, route: str, params: dict = None, json: dict = None) -> Any:
-        return requests.put(self.__ip + "/" + route, json=json, params=params)
+        return requests.put(self.__ip + '/' + route, json=json, params=params)
 
     @handle_server_errors
     def post(self, route: str, params: dict = None, json: dict = None) -> Any:
-        return requests.post(self.__ip + "/" + route, json=json, params=params)
+        return requests.post(self.__ip + '/' + route, json=json, params=params)
 
     @handle_server_errors
     def delete(self, route: str, params: dict = None) -> Any:
-        return requests.delete(self.__ip + "/" + route, params=params)
+        return requests.delete(self.__ip + '/' + route, params=params)

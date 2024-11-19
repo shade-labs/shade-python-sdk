@@ -10,7 +10,7 @@ class Config:
 
     def get_config(self) -> dict:
         # TODO make this a pydantic model
-        return self.__api.get("config").json()
+        return self.__api.get('config').json()
 
     def set_config(self, config: dict) -> None:
         """
@@ -18,4 +18,4 @@ class Config:
         :param config: The config dict to set
         :return: None
         """
-        self.__api.post("config", json=config)
+        self.__api.post('config', json=config)

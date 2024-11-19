@@ -15,7 +15,7 @@ class Preview(BaseModel):
     api: API
 
     def get_image(self) -> Image:
-        response = self.api.get(f"previews/{self.id}")
+        response = self.api.get(f'previews/{self.id}')
 
         image_bytes = BytesIO(response.content)
 
@@ -33,7 +33,7 @@ class Previews:
     def request_preview(self, path: Path) -> Preview:
         path = self.__mount_info.translate_filepath_to_server(path)
 
-        response = self.__api.post("previews", params={"path": str(path)})
+        response = self.__api.post('previews', params={'path': str(path)})
 
         id_ = uuid.UUID(response.json())
 

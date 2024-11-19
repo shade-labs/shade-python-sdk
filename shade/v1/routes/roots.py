@@ -33,7 +33,7 @@ class Roots:
         """
         return [
             RootModel(**root, mount_info=self.__mount_info)
-            for root in self.__api.get("indexing/roots").json()
+            for root in self.__api.get('indexing/roots').json()
         ]
 
     def add_new_root(self, path: Path, collection_id: uuid.UUID = None) -> uuid.UUID:
@@ -41,10 +41,10 @@ class Roots:
         Add a new root to the index. This will start indexing the root
         """
         resp = self.__api.post(
-            "indexing/roots",
+            'indexing/roots',
             json={
-                "paths": [str(self.__mount_info.translate_filepath_to_server(path))],
-                "collection_ids": [str(collection_id)] if collection_id else [],
+                'paths': [str(self.__mount_info.translate_filepath_to_server(path))],
+                'collection_ids': [str(collection_id)] if collection_id else [],
             },
         ).json()
 
@@ -54,4 +54,4 @@ class Roots:
         """
         Delete a root from the index. This will stop indexing the root
         """
-        self.__api.delete(f"indexing/roots/{root_id}")
+        self.__api.delete(f'indexing/roots/{root_id}')

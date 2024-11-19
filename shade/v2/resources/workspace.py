@@ -8,8 +8,8 @@ from .abc_resource import ABCResource
 class Workspace(ABCResource):
     def get_workspaces(self) -> dict:
         resp = requests.get(
-            self.auth.remote_url + "/workspaces",
-            headers={"Authorization": self.auth.api_key},
+            self.auth.remote_url + '/workspaces',
+            headers={'Authorization': self.auth.api_key},
         )
         resp.raise_for_status()
         return resp.json()
@@ -21,8 +21,8 @@ class Workspace(ABCResource):
         :return: The workspace
         """
         resp = requests.get(
-            self.auth.remote_url + f"/workspaces/{id_}",
-            headers={"Authorization": self.auth.api_key},
+            self.auth.remote_url + f'/workspaces/{id_}',
+            headers={'Authorization': self.auth.api_key},
         )
         resp.raise_for_status()
         return resp.json()
@@ -36,10 +36,10 @@ class Workspace(ABCResource):
         workspaces = self.get_workspaces()
 
         for workspace in workspaces:
-            if workspace["name"] == name:
+            if workspace['name'] == name:
                 return workspace
 
-        raise ValueError(f"No workspace with name {name}")
+        raise ValueError(f'No workspace with name {name}')
 
     def create_workspace(self):
         raise NotImplementedError

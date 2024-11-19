@@ -13,12 +13,12 @@ class Assets:
         self.__mount_info = mount_info
 
     def get_all_assets(self) -> list[AssetModel]:
-        assets = self.__api.get("assets")
+        assets = self.__api.get('assets')
 
         return [AssetModel(**asset) for asset in assets.json()]
 
     def get_asset_by_id(self, id_: uuid.UUID) -> AssetModel:
-        asset = self.__api.get(f"assets/{id_}")
+        asset = self.__api.get(f'assets/{id_}')
 
         return AssetModel(**asset.json())
 
@@ -30,7 +30,7 @@ class Assets:
         :param path: The path to the asset
         :return: The asset
         """
-        asset = self.__api.get("indexing/file", params={"path": str(path)})
+        asset = self.__api.get('indexing/file', params={'path': str(path)})
 
         return AssetModel(**asset.json())
 
@@ -55,13 +55,13 @@ class Assets:
         :return:
         """
         self.__api.put(
-            f"assets/{id_}",
+            f'assets/{id_}',
             json={
-                "description": description,
-                "rating": rating,
-                "category": category,
-                "tags": tags,
-                "path": str(path),
+                'description': description,
+                'rating': rating,
+                'category': category,
+                'tags': tags,
+                'path': str(path),
             },
         )
 
@@ -75,20 +75,20 @@ class Assets:
                 return self.get_asset_by_path(path)
             except Exception as e:
                 print(
-                    f"Waiting for asset to index: {path}, not yet available because: {e}"
+                    f'Waiting for asset to index: {path}, not yet available because: {e}'
                 )
             time.sleep(1)
 
-        raise Exception(f"Timed out waiting for asset to index: {path}")
+        raise Exception(f'Timed out waiting for asset to index: {path}')
 
     def delete_all_assets(self) -> None:
         """
         WARNING deletes all assets in the database
         :return:
         """
-        self.__api.delete("assets")
+        self.__api.delete('assets')
 
     def get_faces(self, id_: uuid.UUID) -> list[dict]:
-        faces = self.__api.get(f"assets/{id_}/faces")
+        faces = self.__api.get(f'assets/{id_}/faces')
 
         return faces.json()
