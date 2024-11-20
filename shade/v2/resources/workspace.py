@@ -27,6 +27,20 @@ class Workspace(ABCResource):
         resp.raise_for_status()
         return resp.json()
 
+    def get_workspace_by_domain(self, domain: str) -> dict:
+        """
+        Return the first matching workspace to the given name
+        :param name: The domain of the workspace
+        :return: The workspace
+        """
+        workspaces = self.get_workspaces()
+
+        for workspace in workspaces:
+            if workspace['domain'] == domain:
+                return workspace
+
+        raise ValueError(f'No workspace with domain {domain}')
+
     def get_workspace_by_name(self, name: str) -> dict:
         """
         Return the first matching workspace to the given name
