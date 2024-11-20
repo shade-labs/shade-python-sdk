@@ -5,6 +5,7 @@ from shade.v2.resources.share import DriveRole
 
 REMOTE_URL = 'http://127.0.0.1:9082'
 
+# this is fine, it's a test key... should probably make an env thingy
 API_KEY = 'sk_eeb5f87e66bc3120f9b324e1204a050e41d6fe957966fe3cc51064c14edf1d5e'
 
 if __name__ == '__main__':
