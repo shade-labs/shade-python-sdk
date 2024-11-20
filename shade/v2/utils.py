@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class Auth:
     api_key: str

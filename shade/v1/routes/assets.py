@@ -1,11 +1,10 @@
 import time
 import uuid
+from pathlib import Path
 
 from shade.v1.api import API
-from shade.v1.types import MountInfo
 from shade.v1.models import AssetModel
-from pathlib import Path
-from typing import List
+from shade.v1.types import MountInfo
 
 
 class Assets:
@@ -13,7 +12,7 @@ class Assets:
         self.__api = api
         self.__mount_info = mount_info
 
-    def get_all_assets(self) -> List[AssetModel]:
+    def get_all_assets(self) -> list[AssetModel]:
         assets = self.__api.get('assets')
 
         return [AssetModel(**asset) for asset in assets.json()]
@@ -31,19 +30,19 @@ class Assets:
         :param path: The path to the asset
         :return: The asset
         """
-        asset = self.__api.get(f'indexing/file', params={
-            'path': str(path)
-        })
+        asset = self.__api.get('indexing/file', params={'path': str(path)})
 
         return AssetModel(**asset.json())
 
-    def update_asset(self,
-                     id_: uuid.UUID,
-                     description: str = None,
-                     rating: int = None,
-                     category: str = None,
-                     tags: list = None,
-                     path: Path = None) -> None:
+    def update_asset(
+        self,
+        id_: uuid.UUID,
+        description: str = None,
+        rating: int = None,
+        category: str = None,
+        tags: list = None,
+        path: Path = None,
+    ) -> None:
         """
         Update an asset's attributes
         :param id_: The id of the asset to update
@@ -55,13 +54,16 @@ class Assets:
          changed
         :return:
         """
-        self.__api.put(f'assets/{id_}', json={
-            'description': description,
-            'rating': rating,
-            'category': category,
-            'tags': tags,
-            'path': str(path)
-        })
+        self.__api.put(
+            f'assets/{id_}',
+            json={
+                'description': description,
+                'rating': rating,
+                'category': category,
+                'tags': tags,
+                'path': str(path),
+            },
+        )
 
     def wait_for_asset(self, path: Path, timeout: int = 60) -> AssetModel:
         """
@@ -72,19 +74,21 @@ class Assets:
             try:
                 return self.get_asset_by_path(path)
             except Exception as e:
-                print(f"Waiting for asset to index: {path}, not yet available because: {e}")
+                print(
+                    f'Waiting for asset to index: {path}, not yet available because: {e}'
+                )
             time.sleep(1)
 
-        raise Exception(f"Timed out waiting for asset to index: {path}")
+        raise Exception(f'Timed out waiting for asset to index: {path}')
 
     def delete_all_assets(self) -> None:
         """
         WARNING deletes all assets in the database
         :return:
         """
-        self.__api.delete(f'assets')
+        self.__api.delete('assets')
 
-    def get_faces(self, id_: uuid.UUID) -> List[dict]:
+    def get_faces(self, id_: uuid.UUID) -> list[dict]:
         faces = self.__api.get(f'assets/{id_}/faces')
 
         return faces.json()

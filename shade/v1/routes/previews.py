@@ -33,19 +33,11 @@ class Previews:
     def request_preview(self, path: Path) -> Preview:
         path = self.__mount_info.translate_filepath_to_server(path)
 
-        response = self.__api.post(f'previews', params={
-            'path': str(path)
-        })
+        response = self.__api.post('previews', params={'path': str(path)})
 
         id_ = uuid.UUID(response.json())
 
-        return Preview(
-            id=id_,
-            api=self.__api
-        )
+        return Preview(id=id_, api=self.__api)
 
     def get_preview(self, preview_id: uuid.UUID) -> Image:
-        return Preview(
-            id=preview_id,
-            api=self.__api
-        ).get_image()
+        return Preview(id=preview_id, api=self.__api).get_image()

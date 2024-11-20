@@ -1,8 +1,4 @@
-import uuid
-from typing import List, Optional
-
 from shade.v1.api import API
-from shade.v1.models import AssetModel
 from shade.v1.types import MountInfo
 
 

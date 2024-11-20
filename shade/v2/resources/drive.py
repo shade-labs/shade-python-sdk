@@ -1,13 +1,19 @@
 from uuid import UUID
-from .abc_resource import ABCResource
+
 import requests
+
+from .abc_resource import ABCResource
+
 
 class Drive(ABCResource):
     def get_drives(self, workspace: dict | UUID):
         if isinstance(workspace, dict):
             workspace = workspace['id']
 
-        resp = requests.get(self.auth.remote_url + f'/workspaces/{workspace}/drives', headers={'Authorization': self.auth.api_key})
+        resp = requests.get(
+            self.auth.remote_url + f'/workspaces/{workspace}/drives',
+            headers={'Authorization': self.auth.api_key},
+        )
         resp.raise_for_status()
         return resp.json()
 

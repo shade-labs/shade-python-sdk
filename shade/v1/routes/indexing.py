@@ -17,14 +17,10 @@ class Indexing:
         self.__api.post('indexing/sync')
 
     def pause(self):
-        self.__api.post('indexing/pause', json={
-            'pause': True
-        })
+        self.__api.post('indexing/pause', json={'pause': True})
 
     def resume(self):
-        self.__api.post('indexing/pause', json={
-            'pause': False
-        })
+        self.__api.post('indexing/pause', json={'pause': False})
 
     def status(self) -> dict:
         """
@@ -55,9 +51,10 @@ class Indexing:
         self.__api.post('indexing/reset')
 
     def queue_single_file(self, path: Path) -> uuid.UUID:
-        response = self.__api.post('indexing/file', json={
-            'path': str(self.__mount_info.translate_filepath_to_server(path))
-        })
+        response = self.__api.post(
+            'indexing/file',
+            json={'path': str(self.__mount_info.translate_filepath_to_server(path))},
+        )
 
         return uuid.UUID(response.json())
 
@@ -69,8 +66,8 @@ class Indexing:
             status = self.status()
             if status['state'] == 'IDLE':
                 break
-            print(f"Waiting for indexing to finish, {status['state']}. "
-                  f"Progress: {status['progress']}/{status['total']}")
+            print(
+                f"Waiting for indexing to finish, {status['state']}. "
+                f"Progress: {status['progress']}/{status['total']}"
+            )
             time.sleep(1)
-
-

@@ -1,6 +1,7 @@
-import requests
-from typing import Any
 from dataclasses import dataclass
+from typing import Any
+
+import requests
 
 
 @dataclass
@@ -16,12 +17,14 @@ def handle_server_errors(func: callable) -> callable:
     """
     A decorator that for any response code > 400, raise a python exception and print the error
     """
+
     def wrapper(*args, **kwargs):
         resp = func(*args, **kwargs)
         # resp.raise_for_status()
         if not resp.ok:
             raise APIException(status_code=resp.status_code, error=resp.json())
         return resp
+
     return wrapper
 
 

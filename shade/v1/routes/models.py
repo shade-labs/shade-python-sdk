@@ -1,5 +1,4 @@
 from shade.v1.api import API
-from typing import List
 from shade.v1.types import MountInfo
 
 
@@ -8,7 +7,7 @@ class Models:
         self.__api = api
         self.__mount_info = mount_info
 
-    def get_models(self) -> List[str]:
+    def get_models(self) -> list[str]:
         """
         Get the models
         :return: The models

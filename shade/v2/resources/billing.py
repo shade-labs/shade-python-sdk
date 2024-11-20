@@ -15,7 +15,9 @@ class Billing(ABCResource):
         if isinstance(workspace, dict):
             workspace = workspace['id']
 
-        resp = requests.get(self.auth.remote_url + f'/workspaces/{workspace}/usage',
-                            headers={'Authorization': self.auth.api_key})
+        resp = requests.get(
+            self.auth.remote_url + f'/workspaces/{workspace}/usage',
+            headers={'Authorization': self.auth.api_key},
+        )
         resp.raise_for_status()
         return resp.json()

@@ -18,10 +18,16 @@ class __Shade:
     ip: str
     port: int
 
-    def __init__(self, local_mount_location: Path, server_mount_location: Path, ip: str, port: int):
+    def __init__(
+        self,
+        local_mount_location: Path,
+        server_mount_location: Path,
+        ip: str,
+        port: int,
+    ):
         self.mount_info = MountInfo(
             local_mount_location=local_mount_location,
-            server_mount_location=server_mount_location
+            server_mount_location=server_mount_location,
         )
         self.ip = ip
         self.port = port
@@ -42,13 +48,9 @@ class ShadeLocal(__Shade):
     """
     A local instance to connect to. This will do no filepath translation.
     """
+
     def __init__(self, ip: str = 'http://localhost', port: int = 9082):
-        super().__init__(
-            Path('/'),
-            Path('/'),
-            ip,
-            port
-        )
+        super().__init__(Path('/'), Path('/'), ip, port)
 
 
 class ShadeRemote(__Shade):
@@ -67,10 +69,12 @@ class ShadeRemote(__Shade):
     and translate those to server calls like
     /home/user/blendfile.blend
     """
-    def __init__(self, local_mount_location: Path, server_mount_location: Path, ip: str, port: int = 9082):
-        super().__init__(
-            local_mount_location,
-            server_mount_location,
-            ip,
-            port
-        )
+
+    def __init__(
+        self,
+        local_mount_location: Path,
+        server_mount_location: Path,
+        ip: str,
+        port: int = 9082,
+    ):
+        super().__init__(local_mount_location, server_mount_location, ip, port)

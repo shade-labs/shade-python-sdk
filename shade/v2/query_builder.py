@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -261,7 +261,7 @@ class FilterBuilder:
 class ComposableQuery(BaseModel):
     query: Optional[str] = None
     similar_asset_id: Optional[UUID] = None
-    filters: List[FilterQuery] = []
+    filters: list[FilterQuery] = []
     limit: Optional[int] = None
     page: Optional[int] = None
     threshold: Optional[float] = None
