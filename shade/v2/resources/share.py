@@ -31,23 +31,20 @@ class Share(ABCResource):
         if isinstance(drive, dict):
             drive = drive.get('id')
 
-        json = {
-            'path': str(asset_path),
-            'invites': [
-                {
-                    'email': email,
-                    'role': role.value,
-                }
-            ],
-            'url': url,
-            'message': message,
-        }
-        print(json)
-
         resp = requests.post(
             self.auth.remote_url + f'/workspaces/drives/{drive}/share-file',
             headers={'Authorization': self.auth.api_key},
-            json=json,
+            json={
+                'path': str(asset_path),
+                'invites': [
+                    {
+                        'email': email,
+                        'role': role.value,
+                    }
+                ],
+                'url': url,
+                'message': message,
+            },
         )
         resp.raise_for_status()
         return resp.json()
