@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from shade.v2.resources.asset import Asset
 from shade.v2.resources.drive import Drive
 from shade.v2.resources.file import File
+from shade.v2.resources.share import Share
 from shade.v2.resources.workspace import Workspace
 from shade.v2.utils import Auth
 
@@ -18,3 +19,4 @@ class Shade:
         self.drive = Drive(auth=self.auth)
         self.asset = Asset(auth=self.auth)
         self.file = File(auth=self.auth)
+        self.share = Share(auth=self.auth)
