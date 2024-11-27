@@ -3,7 +3,7 @@ from uuid import UUID
 
 import requests
 
-from shade.v2.resources.abc_resource import ABCResource
+from shade.resources.abc_resource import ABCResource
 
 
 class File(ABCResource):
