@@ -77,3 +77,20 @@ class Asset(ABCResource):
         resp.raise_for_status()
 
         return resp.json()
+
+    def delete_asset(self, drive: UUID | dict, path: Path) -> bool:
+        if isinstance(drive, dict):
+            drive = drive.get('id')
+
+        resp = requests.post(
+            self.auth.remote_url + '/files/trash',
+            headers={'Authorization': self.auth.api_key},
+            json={
+                'path': str(path),
+                'drive_id': drive,
+            },
+        )
+
+        resp.raise_for_status()
+
+        return resp.status_code == 200

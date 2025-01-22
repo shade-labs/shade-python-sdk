@@ -15,8 +15,9 @@ class Shade:
 
     def __post_init__(self):
         self.auth = Auth(api_key=self.api_key, remote_url=self.remote_url)
-        self.workspace = Workspace(auth=self.auth)
-        self.drive = Drive(auth=self.auth)
-        self.asset = Asset(auth=self.auth)
-        self.file = File(auth=self.auth)
-        self.share = Share(auth=self.auth)
+
+        self.workspace = Workspace(auth=self.auth, shade=self)
+        self.drive = Drive(auth=self.auth, shade=self)
+        self.asset = Asset(auth=self.auth, shade=self)
+        self.file = File(auth=self.auth, shade=self)
+        self.share = Share(auth=self.auth, shade=self)
