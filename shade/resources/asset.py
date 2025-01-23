@@ -118,22 +118,20 @@ class Asset(ABCResource):
         }
 
         if description:
-            body.description = description
+            body['description'] = description
 
         if category:
-            body.category = category
+            body['category'] = category
 
         if rating:
-            body.rating = rating
+            body['rating'] = rating
 
-        resp = requests.post(
+        resp = requests.put(
             self.auth.remote_url + f'/assets/{asset}',
             headers={'Authorization': self.auth.api_key},
             json=body,
         )
 
-        print(resp)
-
         resp.raise_for_status()
 
-        return resp.status_code == 200
+        return resp.json()
