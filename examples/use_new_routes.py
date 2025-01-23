@@ -93,3 +93,16 @@ if __name__ == '__main__':
         print(files)
 
     search_similar()
+
+    def update_asset():
+        update = shade.asset.update_asset(
+            drive=drive,
+            asset=assets[0],
+            description='This is a new description',
+            rating=5,
+            category='New Category',
+        )
+
+        print(update)
+
+    update_asset()

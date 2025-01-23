@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 from uuid import UUID
 
 import requests
@@ -94,6 +95,44 @@ class Asset(ABCResource):
                 'drive_id': drive,
             },
         )
+
+        resp.raise_for_status()
+
+        return resp.status_code == 200
+
+    def update_asset(
+        self,
+        drive: UUID | dict,
+        asset: UUID | dict,
+        description: Optional[str],
+        rating: Optional[int],
+        category: Optional[str],
+    ) -> bool:
+        if isinstance(drive, dict):
+            drive = drive.get('id')
+        if isinstance(asset, dict):
+            asset = asset.get('id')
+
+        body = {
+            'drive_id': drive,
+        }
+
+        if description:
+            body.description = description
+
+        if category:
+            body.category = category
+
+        if rating:
+            body.rating = rating
+
+        resp = requests.post(
+            self.auth.remote_url + f'/assets/{asset}',
+            headers={'Authorization': self.auth.api_key},
+            json=body,
+        )
+
+        print(resp)
 
         resp.raise_for_status()
 
