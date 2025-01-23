@@ -67,20 +67,22 @@ if __name__ == '__main__':
 
     # similar_asset_id
 
-    files = shade.asset.listdir_files(
-        drive=drive,
-        query=QueryBuilder()
-        .set_query('city')
-        .set_path('/38d862c3-7699-4ff0-b0fc-9be89c2f85af/shade_tests/places/nyc')
-        # .add_filter(
-        #     # FilterBuilder().date_created.before.set_options({'date': '2021-01-01'}).finish()
-        #     FilterBuilder().path.starts_with.set_options([']).finish()
-        # )
-        # .add_filter(FilterBuilder().file_type.is_.set_options(['VIDEO']).finish())
-        # .page(2)
-        .limit(50)
-        .threshold(0)
-        .finish(),
-    )
+    def search_in_folder():
+        files = shade.asset.listdir_files(
+            drive=drive,
+            query=QueryBuilder()
+            .set_query('city')
+            .set_path('/38d862c3-7699-4ff0-b0fc-9be89c2f85af/shade_tests/places/nyc')
+            .limit(50)
+            .threshold(0)
+            .finish(),
+        )
 
-    print(len(files))
+        print(len(files))
+
+    search_in_folder()
+
+    def search_similar():
+        pass
+
+    search_similar()

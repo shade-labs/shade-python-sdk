@@ -51,6 +51,8 @@ class Asset(ABCResource):
             | (query.model_dump() if query else {}),
         )
 
+        print(resp)
+
         resp.raise_for_status()
 
         return resp.json()
