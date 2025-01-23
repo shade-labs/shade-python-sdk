@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class FilterQuery(BaseModel):
     id: str
     clause: str
-    options: dict
+    options: dict | list
 
 
 class FilterBuilder:
@@ -260,6 +260,8 @@ class FilterBuilder:
 
 class ComposableQuery(BaseModel):
     query: Optional[str] = None
+    path: Optional[str] = None
+
     similar_asset_id: Optional[UUID] = None
     filters: list[FilterQuery] = []
     limit: Optional[int] = None
@@ -272,6 +274,10 @@ class QueryBuilder:
 
     def set_query(self, query: str) -> 'QueryBuilder':
         self.query.query = query
+        return self
+
+    def set_path(self, path: str) -> 'QueryBuilder':
+        self.query.path = path
         return self
 
     def set_similar_asset(self, asset: UUID | dict) -> 'QueryBuilder':

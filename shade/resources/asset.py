@@ -15,6 +15,8 @@ class Asset(ABCResource):
         data = query.model_dump()
         data['drive_id'] = drive
 
+        print('Data', data)
+
         resp = requests.post(
             self.auth.remote_url + '/search',
             headers={'Authorization': self.auth.api_key},
@@ -34,6 +36,8 @@ class Asset(ABCResource):
     ) -> list[dict]:
         if isinstance(drive, dict):
             drive = drive.get('id')
+
+        print(query.model_dump() if query else {})
 
         resp = requests.post(
             self.auth.remote_url + '/search/files',

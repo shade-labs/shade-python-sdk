@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from shade import Shade
+from shade.query_builder import QueryBuilder
 from shade.resources.share import DriveRole
 
 REMOTE_URL = 'http://127.0.0.1:9082'
@@ -59,8 +60,27 @@ if __name__ == '__main__':
 
     def delete_asset():
         resp = shade.asset.delete_asset(drive=drive, path=Path(assets[0].get('path')))
-        print(resp)
         if resp:
             print('Deleted asset')
 
     # delete_asset() Todo only uncomment if there is an asset to delete on the top level of the drive
+
+    # similar_asset_id
+
+    files = shade.asset.listdir_files(
+        drive=drive,
+        query=QueryBuilder()
+        .set_query('city')
+        .set_path('/38d862c3-7699-4ff0-b0fc-9be89c2f85af/shade_tests/places/nyc')
+        # .add_filter(
+        #     # FilterBuilder().date_created.before.set_options({'date': '2021-01-01'}).finish()
+        #     FilterBuilder().path.starts_with.set_options([']).finish()
+        # )
+        # .add_filter(FilterBuilder().file_type.is_.set_options(['VIDEO']).finish())
+        # .page(2)
+        .limit(50)
+        .threshold(0)
+        .finish(),
+    )
+
+    print(len(files))
