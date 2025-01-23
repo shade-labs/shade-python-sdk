@@ -280,11 +280,11 @@ class QueryBuilder:
         self.query.path = path
         return self
 
-    def set_similar_asset(self, asset: UUID | dict) -> 'QueryBuilder':
+    def set_similar_asset(self, asset: UUID | str | dict) -> 'QueryBuilder':
         if isinstance(asset, dict):
-            self.query.similar_asset_id = asset.get('id')
+            asset = asset.get('id')
 
-        self.query.similar_asset_id = asset
+        self.query.similar_asset_id = str(asset)
         return self
 
     def add_filter(self, filter_: FilterQuery) -> 'QueryBuilder':
@@ -304,4 +304,7 @@ class QueryBuilder:
         return self
 
     def finish(self) -> ComposableQuery:
+        assert self.query.path is not None, 'Path is required'
+        assert len(self.query.path) > 36, 'Path should start with /{drive_id}/'
+
         return self.query

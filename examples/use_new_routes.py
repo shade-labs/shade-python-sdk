@@ -65,8 +65,6 @@ if __name__ == '__main__':
 
     # delete_asset() Todo only uncomment if there is an asset to delete on the top level of the drive
 
-    # similar_asset_id
-
     def search_in_folder():
         files = shade.asset.listdir_files(
             drive=drive,
@@ -80,9 +78,18 @@ if __name__ == '__main__':
 
         print(len(files))
 
-    search_in_folder()
+    # search_in_folder()
 
     def search_similar():
-        pass
+        files = shade.asset.listdir_files(
+            drive=drive,
+            query=QueryBuilder()
+            .set_similar_asset(assets[0])
+            .set_path('/38d862c3-7699-4ff0-b0fc-9be89c2f85af/')
+            .limit(50)
+            .threshold(0)
+            .finish(),
+        )
+        print(files)
 
     search_similar()
