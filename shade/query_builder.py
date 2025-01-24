@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class FilterQuery(BaseModel):
     id: str
     clause: str
-    options: dict
+    options: dict | list
 
 
 class FilterBuilder:
@@ -260,6 +260,8 @@ class FilterBuilder:
 
 class ComposableQuery(BaseModel):
     query: Optional[str] = None
+    path: Optional[str] = None
+
     similar_asset_id: Optional[UUID] = None
     filters: list[FilterQuery] = []
     limit: Optional[int] = None
@@ -274,11 +276,15 @@ class QueryBuilder:
         self.query.query = query
         return self
 
-    def set_similar_asset(self, asset: UUID | dict) -> 'QueryBuilder':
-        if isinstance(asset, dict):
-            self.query.similar_asset_id = asset.get('id')
+    def set_path(self, path: str) -> 'QueryBuilder':
+        self.query.path = path
+        return self
 
-        self.query.similar_asset_id = asset
+    def set_similar_asset(self, asset: UUID | str | dict) -> 'QueryBuilder':
+        if isinstance(asset, dict):
+            asset = asset.get('id')
+
+        self.query.similar_asset_id = str(asset)
         return self
 
     def add_filter(self, filter_: FilterQuery) -> 'QueryBuilder':
@@ -298,4 +304,7 @@ class QueryBuilder:
         return self
 
     def finish(self) -> ComposableQuery:
+        assert self.query.path is not None, 'Path is required'
+        assert len(self.query.path) > 36, 'Path should start with /{drive_id}/'
+
         return self.query

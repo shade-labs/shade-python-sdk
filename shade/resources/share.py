@@ -1,5 +1,6 @@
 from enum import Enum
 from pathlib import Path
+from typing import Optional
 from uuid import UUID
 
 import requests
@@ -25,8 +26,8 @@ class Share(ABCResource):
         asset_path: Path,
         email: str,
         role: DriveRole,
-        url,
-        message,
+        url: Optional[str] = None,
+        message: Optional[str] = '',
     ) -> dict:
         if isinstance(drive, dict):
             drive = drive.get('id')

@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 from uuid import UUID
 
 import requests
@@ -14,6 +15,8 @@ class Asset(ABCResource):
 
         data = query.model_dump()
         data['drive_id'] = drive
+
+        print('Data', data)
 
         resp = requests.post(
             self.auth.remote_url + '/search',
@@ -34,6 +37,8 @@ class Asset(ABCResource):
     ) -> list[dict]:
         if isinstance(drive, dict):
             drive = drive.get('id')
+
+        print(query.model_dump() if query else {})
 
         resp = requests.post(
             self.auth.remote_url + '/search/files',
@@ -72,6 +77,59 @@ class Asset(ABCResource):
                 'limit': limit,
                 'query': query,
             },
+        )
+
+        resp.raise_for_status()
+
+        return resp.json()
+
+    def delete_asset(self, drive: UUID | dict, path: Path) -> bool:
+        if isinstance(drive, dict):
+            drive = drive.get('id')
+
+        resp = requests.post(
+            self.auth.remote_url + '/files/trash',
+            headers={'Authorization': self.auth.api_key},
+            json={
+                'path': str(path),
+                'drive_id': drive,
+            },
+        )
+
+        resp.raise_for_status()
+
+        return resp.status_code == 200
+
+    def update_asset(
+        self,
+        drive: UUID | dict,
+        asset: UUID | dict,
+        description: Optional[str],
+        rating: Optional[int],
+        category: Optional[str],
+    ) -> bool:
+        if isinstance(drive, dict):
+            drive = drive.get('id')
+        if isinstance(asset, dict):
+            asset = asset.get('id')
+
+        body = {
+            'drive_id': drive,
+        }
+
+        if description:
+            body['description'] = description
+
+        if category:
+            body['category'] = category
+
+        if rating:
+            body['rating'] = rating
+
+        resp = requests.put(
+            self.auth.remote_url + f'/assets/{asset}',
+            headers={'Authorization': self.auth.api_key},
+            json=body,
         )
 
         resp.raise_for_status()
