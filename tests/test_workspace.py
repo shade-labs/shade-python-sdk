@@ -39,3 +39,6 @@ def test_create_and_get_workspace(
 
     get_1 = shade.workspace.get_workspace_by_id(created_workspace.get('id'))
     assert get_1.get('name') == get_2.get('name') == created_workspace.get('name')
+
+
+# asdasasd
