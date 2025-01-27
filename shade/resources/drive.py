@@ -1,7 +1,9 @@
+from typing import Optional
 from uuid import UUID
 
 import requests
 
+from ..enums import DriveIconType, DriveType
 from .abc_resource import ABCResource
 
 
@@ -44,8 +46,9 @@ class Drive(ABCResource):
         workspace: dict | UUID,
         name: str,
         description: str,
-        icon: Optional[str] = None,
-        # icon_type
+        icon: Optional[str] = '',
+        icon_type: DriveIconType = DriveIconType.COLOR,
+        type: DriveType = DriveType.MAGIC,
     ):
         if isinstance(workspace, dict):
             workspace = workspace['id']
@@ -57,8 +60,9 @@ class Drive(ABCResource):
                 'name': name,
                 'description': description,
                 'icon': icon,
-                "icon_type": "color",
-                "type": "magic",
-                "identifier": "",
+                'icon_type': icon_type.value,
+                'type': type.value,
             },
         )
+        resp.raise_for_status()
+        return resp.json()
