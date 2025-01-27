@@ -87,3 +87,16 @@ class Workspace(ABCResource):
         )
         resp.raise_for_status()
         return resp.json()
+
+    def delete_workspace(self, id_: UUID) -> dict:
+        """
+        Delete the workspace with the given id
+        :param id_: The id of the workspace
+        :return: The deleted workspace
+        """
+        resp = requests.delete(
+            self.auth.remote_url + f'/workspaces/{id_}',
+            headers={'Authorization': self.auth.api_key},
+        )
+        resp.raise_for_status()
+        return resp.json()
