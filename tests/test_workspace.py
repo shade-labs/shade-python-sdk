@@ -26,7 +26,13 @@ def test_create_and_get_workspace(
     get_2 = shade.workspace.get_workspace_by_domain(create_workspace_res.get('domain'))
 
     get_1 = shade.workspace.get_workspace_by_id(create_workspace_res.get('id'))
-    assert get_1.get('name') == get_2.get('name') == create_workspace_res.get('name')
+    get_3 = shade.workspace.get_workspace_by_name(get_2.get('name'))
+    assert (
+        get_1.get('name')
+        == get_2.get('name')
+        == get_3.get('name')
+        == create_workspace_res.get('name')
+    )
 
 
 def test_create_and_delete_workspace(

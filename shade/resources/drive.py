@@ -38,3 +38,27 @@ class Drive(ABCResource):
                 return drive
 
         raise ValueError(f'No drive with name {name}')
+
+    def create_drive(
+        self,
+        workspace: dict | UUID,
+        name: str,
+        description: str,
+        icon: Optional[str] = None,
+        # icon_type
+    ):
+        if isinstance(workspace, dict):
+            workspace = workspace['id']
+
+        resp = requests.post(
+            self.auth.remote_url + f'/workspaces/{workspace}/drives',
+            headers={'Authorization': self.auth.api_key},
+            json={
+                'name': name,
+                'description': description,
+                'icon': icon,
+                "icon_type": "color",
+                "type": "magic",
+                "identifier": "",
+            },
+        )

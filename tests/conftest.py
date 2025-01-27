@@ -10,3 +10,24 @@ REMOTE_URL = 'http://127.0.0.1:9082'
 @pytest.fixture
 def shade():
     return Shade(remote_url=REMOTE_URL, api_key=API_KEY)
+
+
+@pytest.fixture
+def test_workspace(shade: Shade):
+    workspace_data = {
+        'name': "Clarkson's Farm",
+        'description': 'Clarkson and his team are back on the farm',
+        'thumbnail': 'manymanybytez',
+        'domain': 'testshadeinc',
+    }
+    try:
+        test_workspace = shade.workspace.get_workspace_by_domain(
+            workspace_data.get('domain')
+        )
+    except ValueError as e:
+        if 'No workspace with domain' in e.args[0]:
+            test_workspace = shade.workspace.create_workspace(**workspace_data)
+        else:
+            raise e
+
+    return test_workspace
