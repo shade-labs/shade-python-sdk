@@ -100,3 +100,19 @@ class Workspace(ABCResource):
         )
         resp.raise_for_status()
         return resp.json()
+
+    def init_workspace_for_tests(
+        self, workspace_domain: str, drive_identifier: str
+    ) -> dict:
+        """
+        Delete the workspace with the given id
+        :param id_: The id of the workspace
+        :return: The deleted workspace
+        """
+        resp = requests.post(
+            self.auth.remote_url
+            + f'/workspaces/sdk/{workspace_domain}/{drive_identifier}',
+            headers={'Authorization': self.auth.api_key},
+        )
+        resp.raise_for_status()
+        return resp.json()
