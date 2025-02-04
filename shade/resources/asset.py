@@ -104,7 +104,6 @@ class Asset(ABCResource):
         self,
         drive: UUID | dict,
         asset: UUID | dict,
-        description: Optional[str],
         rating: Optional[int],
         category: Optional[str],
     ) -> bool:
@@ -116,9 +115,6 @@ class Asset(ABCResource):
         body = {
             'drive_id': drive,
         }
-
-        if description:
-            body['description'] = description
 
         if category:
             body['category'] = category

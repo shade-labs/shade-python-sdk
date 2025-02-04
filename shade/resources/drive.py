@@ -1,7 +1,9 @@
+from typing import Optional
 from uuid import UUID
 
 import requests
 
+from ..enums import DriveIconType, DriveType
 from .abc_resource import ABCResource
 
 
@@ -38,3 +40,29 @@ class Drive(ABCResource):
                 return drive
 
         raise ValueError(f'No drive with name {name}')
+
+    def create_drive(
+        self,
+        workspace: dict | UUID,
+        name: str,
+        description: str,
+        icon: Optional[str] = '',
+        icon_type: DriveIconType = DriveIconType.COLOR,
+        type: DriveType = DriveType.MAGIC,
+    ):
+        if isinstance(workspace, dict):
+            workspace = workspace['id']
+
+        resp = requests.post(
+            self.auth.remote_url + f'/workspaces/{workspace}/drives',
+            headers={'Authorization': self.auth.api_key},
+            json={
+                'name': name,
+                'description': description,
+                'icon': icon,
+                'icon_type': icon_type.value,
+                'type': type.value,
+            },
+        )
+        resp.raise_for_status()
+        return resp.json()
