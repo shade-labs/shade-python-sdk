@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "shade-python-sdk"
-version = "1.0.0"
+version = "1.0.1"
 description = "Shade SDK"
 authors = ["Shade <shade@shade.inc>"]
 license = "MIT"
 packages = [{ include = "shade" }, { include = "tests" }]
+exclude = ["tests/", "*.test.py", "tests/**/*"]
 
 [tool.poetry.scripts]
 shade-python-sdk-tests = "tests.main:main"
