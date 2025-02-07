@@ -24,6 +24,7 @@ if __name__ == '__main__':
     assets = shade.asset.listdir_files(
         drive=drive, path=Path('/'), page=0, limit=100
     )  # Note: returns the full assset
+
     print('assets', assets)
 
     folders = shade.asset.listdir_folders(
@@ -32,7 +33,9 @@ if __name__ == '__main__':
         page=0,
         limit=100,  # Returns the path of the folder
     )
-    print(folders)
+    print('folders', folders)
+
+    asset = assets[0]
 
     def share_file():
         if shade.share.share_asset(
@@ -44,7 +47,7 @@ if __name__ == '__main__':
         ):
             print('Shared file with user')
 
-    share_file()
+    # share_file()
 
     def share_folder():
         if shade.share.share_asset(
@@ -56,7 +59,7 @@ if __name__ == '__main__':
         ):
             print('Shared folder with user')
 
-    share_folder()
+    # share_folder()
 
     def delete_asset():
         resp = shade.asset.delete_asset(drive=drive, path=Path(assets[0].get('path')))
@@ -92,17 +95,22 @@ if __name__ == '__main__':
         )
         print(files)
 
-    search_similar()
+    # search_similar()
 
     def update_asset():
         update = shade.asset.update_asset(
             drive=drive,
             asset=assets[0],
-            description='This is a new description',
             rating=5,
             category='New Category',
         )
 
         print(update)
 
-    update_asset()
+    # update_asset()
+
+    def get_signed_url():
+        signed_url = shade.asset.get_signed_download_url(drive, asset.get('path'))
+        print('signed_url', signed_url)
+
+    get_signed_url()
