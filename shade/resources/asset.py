@@ -135,14 +135,12 @@ class Asset(ABCResource):
     def get_signed_download_url(
         self,
         drive: UUID | dict,
-        asset: UUID | dict,
+        path: Path,
     ) -> str:
-        # if isinstance(asset, dict):
-        #     asset = asset.get('id')
+        path = str(path)
+
         if isinstance(drive, dict):
             drive = drive.get('id')
-
-        path = asset.get('path')
 
         if not path.startswith(f'/{drive}'):
             raise ValueError('Asset path must start with /{drive_id}')
@@ -150,7 +148,7 @@ class Asset(ABCResource):
         resp = requests.get(
             self.auth.remote_url + '/files/download',
             headers={'Authorization': self.auth.api_key},
-            params={'drive_id': drive, 'path': asset.get('path'), 'download': True},
+            params={'drive_id': drive, 'path': path, 'download': True},
         )
 
         resp.raise_for_status()
