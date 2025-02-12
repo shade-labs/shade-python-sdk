@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 from uuid import UUID
 
 import requests
@@ -104,8 +103,6 @@ class Asset(ABCResource):
         self,
         drive: UUID | dict,
         asset: UUID | dict,
-        rating: Optional[int],
-        category: Optional[str],
     ) -> bool:
         if isinstance(drive, dict):
             drive = drive.get('id')
@@ -115,12 +112,6 @@ class Asset(ABCResource):
         body = {
             'drive_id': drive,
         }
-
-        if category:
-            body['category'] = category
-
-        if rating:
-            body['rating'] = rating
 
         resp = requests.put(
             self.auth.remote_url + f'/assets/{asset}',
