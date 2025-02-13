@@ -117,6 +117,19 @@ if __name__ == '__main__':
 
     drive_metadata = shade.drive.get_custom_metadata(drive)
 
+    person_metadata_field = [
+        item
+        for item in drive_metadata
+        if item.get('description', '').startswith('Check if')
+    ][0]
+
+    shade.asset.update_asset_metadata(
+        drive,
+        asset,
+        metadata_attribute_id=person_metadata_field.get('id'),
+        metadata_attribute_value=False,
+    )
+
     # Note: uncomment these to run actions
     # share_file()
 
