@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Any, Optional
 from uuid import UUID
 
 import requests
@@ -99,22 +100,23 @@ class Asset(ABCResource):
 
         return resp.status_code == 200
 
-    def update_asset(
+    def update_asset_metadata(
         self,
         drive: UUID | dict,
         asset: UUID | dict,
+        metadata_attribute_id: str = None,
+        metadata_attribute_value: Optional[Any] = None,
     ) -> bool:
         if isinstance(drive, dict):
             drive = drive.get('id')
         if isinstance(asset, dict):
             asset = asset.get('id')
 
-        body = {
-            'drive_id': drive,
-        }
+        body = {'drive_id': drive, 'metadata_attribute_value': metadata_attribute_value}
 
         resp = requests.put(
-            self.auth.remote_url + f'/assets/{asset}',
+            self.auth.remote_url
+            + f'/assets/{asset}/metadata/{metadata_attribute_id}/value',
             headers={'Authorization': self.auth.api_key},
             json=body,
         )
