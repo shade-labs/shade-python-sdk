@@ -66,3 +66,14 @@ class Drive(ABCResource):
         )
         resp.raise_for_status()
         return resp.json()
+
+    def get_custom_metadata(self, drive: dict | UUID):
+        if isinstance(drive, dict):
+            drive = drive['id']
+
+        resp = requests.get(
+            self.auth.remote_url + f'/workspaces/drives/{drive}/custom_metadata',
+            headers={'Authorization': self.auth.api_key},
+        )
+        resp.raise_for_status()
+        return resp.json()

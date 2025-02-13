@@ -7,11 +7,11 @@ from shade.resources.share import DriveRole
 """To run this script, get an API key. Make sure you have a workspace with folders and files at the top level"""
 
 
-REMOTE_URL = 'https://api.shade.inc'
-# REMOTE_URL = 'http://127.0.0.1:9082'
+# REMOTE_URL = 'https://api.shade.inc'
+REMOTE_URL = 'http://127.0.0.1:9082'
 
 # Add your test key here
-API_KEY = 'sk_965a8a31cbf49c8ecc842082d40d5fa8cc529aa78a217788536cbeff5cf56ab3'
+API_KEY = 'sk_a11c92d178657a8614316b823f80fa73fe5ffd9adab695b5881f0da4215a3bfd'
 
 # Add the name of your workspace here
 WORKSPACE_DOMAIN = 'sebs-playground'
@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     workspaces = shade.workspace.get_workspaces()
 
-    workspace = shade.workspace.get_workspace_by_domain(WORKSPACE_DOMAIN)
+    workspace = shade.workspace.get_workspace_by_domain(workspaces[0].get('domain'))
 
     drives = shade.drive.get_drives(workspace)
 
@@ -114,6 +114,21 @@ if __name__ == '__main__':
     print('folders', folders)
 
     asset = assets[0]
+
+    drive_metadata = shade.drive.get_custom_metadata(drive)
+
+    person_metadata_field = [
+        item
+        for item in drive_metadata
+        if item.get('description', '').startswith('Check if')
+    ][0]
+
+    shade.asset.update_asset_metadata(
+        drive,
+        asset,
+        metadata_attribute_id=person_metadata_field.get('id'),
+        metadata_attribute_value=False,
+    )
 
     # Note: uncomment these to run actions
     # share_file()
