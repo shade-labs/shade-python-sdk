@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
     asset = assets[0]
 
-    drive_metadata = shade.drive.get_metadata(drive)
+    drive_metadata = shade.drive.get_custom_metadata(drive)
 
     # Note: uncomment these to run actions
     # share_file()
