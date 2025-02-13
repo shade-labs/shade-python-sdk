@@ -72,7 +72,7 @@ class Drive(ABCResource):
             drive = drive['id']
 
         resp = requests.get(
-            self.auth.remote_url + f'/workspaces/drives/{drive}/custom_metadata',
+            self.auth.remote_url + f'/workspaces/drives/{drive}/custom-metadata',
             headers={'Authorization': self.auth.api_key},
         )
         resp.raise_for_status()
