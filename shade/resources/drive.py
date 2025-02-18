@@ -3,7 +3,7 @@ from uuid import UUID
 
 import requests
 
-from ..enums import DriveIconType, DriveType
+from ..enums import DriveIconType, DriveType, MetadataAttribute
 from .abc_resource import ABCResource
 
 
@@ -74,6 +74,24 @@ class Drive(ABCResource):
         resp = requests.get(
             self.auth.remote_url + f'/workspaces/drives/{drive}/custom-metadata',
             headers={'Authorization': self.auth.api_key},
+        )
+        resp.raise_for_status()
+        return resp.json()
+
+    def add_drive_metadata(self, drive: dict | UUID, metadata: MetadataAttribute):
+        """Add metadata attributes to a drive.
+
+        Args:
+            drive: Drive ID or drive dict object
+            metadata: Dictionary containing the metadata attributes
+        """
+        if isinstance(drive, dict):
+            drive = drive['id']
+
+        resp = requests.post(
+            self.auth.remote_url + f'/workspaces/drives/{drive}/metadata',
+            headers={'Authorization': self.auth.api_key},
+            json=metadata.model_dump(mode='json'),
         )
         resp.raise_for_status()
         return resp.json()
