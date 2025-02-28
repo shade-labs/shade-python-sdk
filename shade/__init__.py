@@ -12,9 +12,10 @@ from shade.utils import Auth
 class Shade:
     api_key: str
     remote_url: str = 'https://api.shade.inc'
+    fs_url: str = 'https://fs.shade.inc'
 
     def __post_init__(self):
-        self.auth = Auth(api_key=self.api_key, remote_url=self.remote_url)
+        self.auth = Auth(api_key=self.api_key, remote_url=self.remote_url, fs_url=self.fs_url)
 
         self.workspace = Workspace(auth=self.auth, shade=self)
         self.drive = Drive(auth=self.auth, shade=self)

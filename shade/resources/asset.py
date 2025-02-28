@@ -1,6 +1,10 @@
+import os
+import sys
+import threading
 from pathlib import Path
 from typing import Any, Optional
 from uuid import UUID
+import subprocess
 
 import requests
 
@@ -147,3 +151,61 @@ class Asset(ABCResource):
         resp.raise_for_status()
 
         return resp.json()
+
+    @staticmethod
+    def __print_stream(stream, stderr: bool = False):
+        for line in iter(stream.readline, b''):
+            print(line.decode().strip(), file=sys.stderr if stderr else sys.stdout)
+
+    def upload_using_external_uploader(
+        self,
+        uploader_path: Path,
+        drive: UUID | dict,
+        directory: Path,
+        destination: str = '/',
+    ):
+        """
+        Using the uploader binary, upload a directory to the specified drive
+        """
+        if isinstance(drive, dict):
+            drive = drive.get('id')
+
+        popen = subprocess.Popen([
+            str(uploader_path),
+            '--mode',
+            'directory',
+            '--directory',
+            str(directory),
+            '--drive',
+            str(drive),
+            '--key',
+            self.auth.api_key,
+            '--destination',
+            str(destination),
+        ], env={
+            **os.environ,
+            'SHADE_API_URL': self.auth.remote_url,
+            'FS_API_URL': self.auth.fs_url,
+            'FS_WS_URL': self.auth.fs_url.replace('https://', 'wss://') if self.auth.fs_url.startswith('https://') else self.auth.fs_url.replace('http://', 'ws://'),
+        },
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+
+        stdout = threading.Thread(target=self.__print_stream, args=(popen.stdout,))
+        stderr = threading.Thread(target=self.__print_stream, args=(popen.stderr, True))
+
+        # Start streaming
+        stdout.start()
+        stderr.start()
+
+        # Wait for the process
+        popen.wait()
+
+        # Close the streams
+        popen.stdout.close()
+        popen.stderr.close()
+
+        # Join the threads and we're done
+        stdout.join()
+        stderr.join()
+
